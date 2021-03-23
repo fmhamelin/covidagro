@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>TD1 - COVIDAGRO</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">COVIDAGRO</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Bienvenue</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">TD1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD2/" class="nav-link">TD2</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../TD2/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#introduction-a-la-modelisation-en-epidemiologie-covid19-1ere-flambee-croissance-exponentielle-des-deces" class="nav-link">Introduction à la modélisation en épidémiologie : COVID19 - 1ère flambée - croissance exponentielle des décès</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#modele-epidemiologique" class="nav-link">Modèle épidémiologique</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#traitement-des-donnees" class="nav-link">Traitement des données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#ajustement-du-modele-aux-donnees" class="nav-link">Ajustement du modèle aux données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#interpretation-des-resultats" class="nav-link">Interprétation des résultats</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction-a-la-modelisation-en-epidemiologie-covid19-1ere-flambee-croissance-exponentielle-des-deces">Introduction à la modélisation en épidémiologie : COVID19 - 1ère flambée - croissance exponentielle des décès</h1>
+<p>Frédéric Hamelin, le 22 Mars 2021.</p>
+<h2 id="modele-epidemiologique">Modèle épidémiologique</h2>
+<p>Dans ce premier TD, nous allons modéliser la croissance initiale de l'épidémie de COVID19 en France sur la base des données de décès uniquement.</p>
+<p>Les variables du modèle sont : </p>
+<ul>
+<li>
+<script type="math/tex"> S(t) </script> : le nombre de personnes sensibles au temps <script type="math/tex"> t </script>, </li>
+<li>
+<script type="math/tex"> I(t) </script> : le nombre de personnes infectées et infectieuses, </li>
+<li>
+<script type="math/tex"> R(t) </script> : le nombre de personnes rétablies ou guéries,</li>
+<li>
+<script type="math/tex"> D(t) </script> : le nombre de personnes décédées. </li>
+</ul>
+<p>La taille de la population est <script type="math/tex">N=S+I+R</script>. </p>
+<p>Les paramètres du modèles sont </p>
+<ul>
+<li>
+<script type="math/tex"> \beta </script> : le taux de transmission de la maladie, </li>
+<li>
+<script type="math/tex"> \gamma </script> : le taux de guérison,</li>
+<li>
+<script type="math/tex"> \alpha </script> : le taux de mortalité due à la maladie.</li>
+</ul>
+<p>Ce sont des "taux" par unité de temps. </p>
+<p><img alt="plot0" src="../figsTD1/plot0.svg" /></p>
+<p>Le modèle s'écrit :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}S}{\mathrm{d}t}&=&-\beta \frac{I}{N}S\,,\\
+\frac{\mathrm{d}I}{\mathrm{d}t}&=&\beta \frac{I}{N}S - (\alpha+\gamma)I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,,\\
+\frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
+\end{eqnarray}
+</script>
+Comme nous nous intéressons à la phase initiale de l'épidémie, nous faisons l'hypothèse que pour tout <script type="math/tex">t</script> dans cette phase initiale, <script type="math/tex">I,R,D \ll S</script>, de sorte que <script type="math/tex">S\approx N</script>(la taille de la population est approximativement constante durant cette période). Le modèle simplifié s'écrit :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}I}{\mathrm{d}t}&=&(\beta  - \alpha-\gamma)I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,,\\
+\frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
+\end{eqnarray}
+</script>
+Ainsi,
+<script type="math/tex; mode=display">
+I(t) = I(0)\exp\left(\left(\beta-\alpha-\gamma\right)t\right),
+</script>
+et
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+D(t)&=&D(0)+\int_0^t\alpha I(\tau) \mathrm{d}\tau\,,\\ &=& D(0)+\alpha\int_0^t I(0)\exp\left(\left(\beta-\alpha-\gamma\right)\tau\right) \mathrm{d}\tau\,,\\
+&=& D(0) + \frac{\alpha I(0)}{\beta-\alpha-\gamma}\left[\exp\left(\left(\beta-\alpha-\gamma\right)t\right)-1\right]\,.
+\end{eqnarray}
+</script>
+Soient 
+<script type="math/tex; mode=display">
+r=\beta-\alpha-\gamma\,,\quad\mbox{et}\quad q=\alpha I(0)\,.
+</script>
+Le modèle s'écrit enfin
+<script type="math/tex; mode=display">
+D(t)=D(0)+\frac{q}{r}\left(\exp(rt)-1\right)\,.
+</script>
+</p>
+<p>Selon le modèle, le nombre de décès cumulés croît de façon exponentielle en fonction du temps.</p>
+<h2 id="traitement-des-donnees">Traitement des données</h2>
+<p>Commençons par nettoyer le plan de travail :</p>
+<pre><code class="language-R">rm(list=ls())  # Efface les variables créées lors des exécutions précédentes
+graphics.off() # Ferme les fenêtres ouvertes lors des exécutions précédentes
+</code></pre>
+<p>Nous aurons besoin de la librairie <code>readr</code> :</p>
+<pre><code class="language-R">library(readr) # Nécessaire pour utiliser la fonction read_csv ci-dessous
+</code></pre>
+<p>Importons les <a href="https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/#_">Données relatives à l’épidémie de COVID-19 en France : vue d’ensemble</a> :</p>
+<pre><code class="language-R">data &lt;- read_csv(url(&quot;https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71&quot;))
+</code></pre>
+<p>Remplaçons les données manquantes par des zéros pour faciliter le traitement des données ensuite :</p>
+<pre><code class="language-R">data[is.na(data)]=0
+</code></pre>
+<p>Nous sommes intéressés par les décès totaux (hôpital + EHPAD) :</p>
+<pre><code class="language-R">Dobs=data$total_deces_hopital+data$total_deces_ehpad # décès cumulés
+</code></pre>
+<p>Affichons les décès en fonction du temps :</p>
+<pre><code class="language-R">L=length(data$date) # longueur de la série de données
+Tobs=seq(0,L-1,by=1) # Vecteur temps
+plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de personnes décédées&quot;,col=&quot;blue&quot;)
+</code></pre>
+<p><img alt="plot1" src="../figsTD1/plot1.svg" /></p>
+<p>Restreignons la période étudiée au mois de mars 2020 (1ère flambée) :</p>
+<pre><code class="language-R">Tmax=30 # Fin de la fenêtre temporelle (le 31 mars 2020)
+w=seq(0,Tmax,by=1) # Fenêtre temporelle considérée
+
+Tobs=Tobs[w]  # Troncation des données
+Dobs=Dobs[w]
+</code></pre>
+<p>Affichons les décès cumulés sur cette période :</p>
+<p><img alt="plot2" src="../figsTD1/plot2.svg" /></p>
+<p>La croissance est-elle exponentielle ? Si oui, le logarithme du nombre de décès devrait croître de façon linéaire en fonction du temps :</p>
+<pre><code class="language-R">plot(Tobs,log(Dobs),xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Log(Nombre de décès cumulés)&quot;,col=&quot;blue&quot;)
+reg=lm(log(Dobs)~Tobs) # Régression linéaire
+intercept=reg$coefficients[[1]]
+slope=reg$coefficients[[2]]
+abline(reg)
+</code></pre>
+<p><img alt="plot3" src="../figsTD1/plot3.svg" /></p>
+<p>Nous voyons que la croissance du logarithme est relativement linéaire sur la période considérée. L'hypothèse d'une croissance exponentielle du nombre de décès cumulés paraît raisonnable sur la période considérée (mars 2020).</p>
+<h2 id="ajustement-du-modele-aux-donnees">Ajustement du modèle aux données</h2>
+<p>Au 2 mars (<script type="math/tex"> t=0 </script>), le nombre de décès cumulés est <script type="math/tex">D(0)=3</script>:</p>
+<pre><code class="language-R">D0=Dobs[1] # Donnée initiale
+</code></pre>
+<p>Comme <script type="math/tex">D(0)</script> est petit par rapport au nombre de décès cumulés (ce nombre dépasse 3000 à la fin du mois de mars), on peut considérer la relation suivante en première et grossière approximation :
+<script type="math/tex; mode=display">
+D(t)=D(0)+\frac{q}{r}\left(\exp(rt)-1\right))\approx \frac{q}{r}\exp(rt)\,.
+</script>
+Cela donne
+<script type="math/tex; mode=display">
+\log(D(t))\approx\log\left(\frac{q}{r}\right)+rt\,,
+</script>
+ce qui permet d'obtenir des estimations initiales des valeurs des paramètres <script type="math/tex">r</script>et <script type="math/tex">q</script>d'après la régression linéaire réalisée précédemment :</p>
+<pre><code class="language-R">#estimations grossières initiales
+r=slope             # r = beta - alpha - gamma
+q=r*exp(intercept)  # q = alpha*I_0
+</code></pre>
+<p>Calculons la courbe issue du modèle pour ces valeurs de paramètres :</p>
+<pre><code class="language-R">Tmodel=Tobs # on calcule la solution du modèle pour les dates d'observation
+Dmodel=D0 + (q/r)*(exp(r*Tmodel)-1)
+</code></pre>
+<p>Comparons le modèle aux données :</p>
+<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
+lines(Tmodel,Dmodel,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="plot4" src="../figsTD1/plot4.svg" /></p>
+<p>L'ajustement pourrait être meilleur. Appelons <script type="math/tex">\theta=\{r,q\}</script> le vecteur des paramètres à optimiser :</p>
+<pre><code class="language-R">theta=c(r,q) # Vecteur des paramètres à optimiser
+</code></pre>
+<h3 id="methode-des-moindres-carres">Méthode des moindres carrés</h3>
+<p>Recherchons les valeurs des paramètres <script type="math/tex">r</script>et <script type="math/tex">q</script>qui minimisent la somme des carrés des écarts entre modèle et données (SCE) :
+<script type="math/tex; mode=display">
+\mbox{SCE} = \sum_{t=0}^T \left(D_{\small\mbox{model}}(t)-D_{\small\mbox{data}}(t)\right)^2\,.
+</script>
+Créons une fonction qui prend en entrée les paramètres à optimiser et renvoie en sortie la quantité à minimiser (SCE) :</p>
+<pre><code class="language-R">SCE_Covid=function(theta){
+  r=theta[1]    
+  q=theta[2]
+
+  Dmodel = D0 + (q/r)*(exp(r*Tmodel)-1) 
+
+  ecarts = Dobs - Dmodel
+  SCE = sum(ecarts^2)
+
+  return(SCE)
+}
+</code></pre>
+<p>Cherchons les valeurs des paramètres qui minimisent SCE :</p>
+<pre><code class="language-R">opt=optim(theta,SCE_Covid) # La fonction optim minimise par défaut
+r=opt$par[1]
+q=opt$par[2]
+</code></pre>
+<p>Affichons la solution optimale au sens des moindres carrés :</p>
+<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
+lines(Tmodel,Dmodel,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="plot5" src="../figsTD1/plot5.svg" /></p>
+<p>L'ajustement est meilleur que celui obtenu en première et grossière approximation. Affichons les valeurs des paramètres obtenues :</p>
+<pre><code class="language-R">print(r)
+print(q)
+</code></pre>
+<p>On trouve <script type="math/tex">r \approx 0.17</script> et <script type="math/tex">q \approx 4.11</script>.</p>
+<h3 id="methode-du-maximum-de-vraisemblance">Méthode du maximum de vraisemblance</h3>
+<p>Une méthode alternative consiste à maximiser la probabilité des observations sachant les paramètres. C'est ce qu'on appelle la vraisemblance (<em>likelihood</em> en anglais). </p>
+<p>Nous faisons l'hypothèse que le nombre de décès cumulés observé au jour <script type="math/tex">t</script> est tiré dans une loi de Poisson de moyenne <script type="math/tex">D(t)</script> tel que donné par le modèle :
+<script type="math/tex; mode=display">
+D_{\small\mbox{data}}(t)\sim \mbox{Poisson}\left(D_{\small\mbox{model}}(t)\right)
+</script>
+En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance s'écrit :
+<script type="math/tex; mode=display">
+\mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observer }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\,.
+</script>
+Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
+<script type="math/tex; mode=display">
+\mbox{logLike}(\theta)=\log(\mbox{Like}(\theta))=\sum_{t=0}^T \log\left (\mbox{Prob}(\mbox{observer }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\right )\,.
+</script>
+Créons une fonction qui prend en entrée les paramètres à optimiser et renvoie en sortie la quantité à minimiser (-logLike) :</p>
+<pre><code class="language-R">LL_Covid=function(theta){ #Log-likelihood
+
+  r=theta[1]
+  q=theta[2]
+
+  Dmodel = D0 + (q/r)*(exp(r*Tmodel)-1)
+
+  probas = dpois(Dobs,Dmodel)
+  LL=sum(log(probas))
+
+  return(-LL)  #on renvoie l'opposé pour minimiser
+}
+</code></pre>
+<p>Cherchons les valeurs des paramètres qui maximisent logLike :</p>
+<pre><code class="language-R">opt=optim(theta,LL_Covid)
+r=opt$par[1]
+q=opt$par[2]
+</code></pre>
+<p>Affichons la solution optimale au sens du maximum de vraisemblance :</p>
+<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
+lines(Tmodel,Dmodel,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="plot6" src="../figsTD1/plot6.svg" /></p>
+<p>L'ajustement est comparable à celui obtenu via les moindres carrés. Affichons les valeurs des paramètres obtenues :</p>
+<pre><code>print(r)
+print(q)
+</code></pre>
+<p>On trouve <script type="math/tex">r \approx 0.19</script> et <script type="math/tex">q \approx 2.47</script>, ce qui diffère un peu des valeurs obtenues via les moindres carrés.</p>
+<h2 id="interpretation-des-resultats">Interprétation des résultats</h2>
+<p>L'ajustement du modèle aux données a permis </p>
+<ul>
+<li>de confirmer le caractère exponentiel de la dynamique épidémique durant la première flambée, telle que mesurée par les décès cumulés en mars 2020, </li>
+<li>d'estimer les paramètres <script type="math/tex">r=\beta-\alpha-\gamma</script> et <script type="math/tex">q=\alpha I(0)</script>.</li>
+</ul>
+<p>En admettant que le taux de mortalité due à la maladie <script type="math/tex">(\alpha)</script> est très petit devant le taux de guérison <script type="math/tex">(\gamma)</script>, nous avons l'approximation <script type="math/tex">r\approx \beta - \gamma</script>. Cela permet d'estimer la reproductivité du virus (<script type="math/tex">\mathcal{R}_0</script>), définie comme le nombre d'infections secondaires générées par un individu infecté dans une population initialement naïve :
+<script type="math/tex; mode=display">
+\mathcal{R}_0 = \frac{\beta}{\alpha+\gamma}\approx \frac{\beta}{\gamma} \approx 1 + \frac{r}{\gamma}\,.
+</script>
+Admettons que le temps de guérison est de 10 jours en moyenne, soit <script type="math/tex">\gamma=0.1</script> par jour. On obtient :</p>
+<ul>
+<li>
+<script type="math/tex">\mathcal{R}_0\approx 2.74</script> via la méthode des moindres carrés,</li>
+<li>
+<script type="math/tex">\mathcal{R}_0\approx 2.98</script> via la méthode du maximum de vraisemblance.</li>
+</ul>
+<p>Ces estimations sont cohérentes avec celles obtenues par différentes études (ex. <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>). </p>
+<p>Le taux de létalité du virus (la probabilité moyenne de mourir lorsqu'on est infecté) est 
+<script type="math/tex; mode=display">
+p=\frac{\alpha}{\alpha+\gamma}\,.
+</script>
+Supposons <script type="math/tex">p=0.8\%</script> (<a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>), ce qui donne <script type="math/tex">\alpha=p\gamma/(1-p)\approx p\gamma = .0008</script>. Nous obtenons</p>
+<ul>
+<li>
+<script type="math/tex">I(0)=q/\alpha\approx 5145</script> via les moindres carrés,</li>
+<li>
+<script type="math/tex">I(0)=q/\alpha\approx 3092</script> via le maximum de vraisemblance.</li>
+</ul>
+<p>Le modèle permet d'estimer un ordre de grandeur du nombre total de personnes infectées et infectieuses au 3 mars, alors que le nombre total de cas confirmés à cette date s'élevait à 191 d'après les <a href="https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/#_">Données relatives à l’épidémie de COVID-19 en France : vue d’ensemble</a>. D'après le modèle, on aurait approximativement <script type="math/tex">4000/200=20</script> personnes infectées pour 1 cas confirmé au 2 mars 2020. </p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

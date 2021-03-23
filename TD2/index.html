@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>TD2 - COVIDAGRO</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">COVIDAGRO</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Bienvenue</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD1/" class="nav-link">TD1</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">TD2</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../TD1/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#introduction-a-la-modelisation-en-epidemiologie-covid19-1ere-flambee-estimation-du-taux-de-letalite" class="nav-link">Introduction à la modélisation en épidémiologie : COVID19 - 1ère flambée - estimation du taux de létalité</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#introduction" class="nav-link">Introduction</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#modele-epidemiologique" class="nav-link">Modèle épidémiologique</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#traitement-des-donnees" class="nav-link">Traitement des données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#ajustement-du-modele-aux-donnees" class="nav-link">Ajustement du modèle aux données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#estimation-du-taux-de-letalite" class="nav-link">Estimation du taux de létalité</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction-a-la-modelisation-en-epidemiologie-covid19-1ere-flambee-estimation-du-taux-de-letalite">Introduction à la modélisation en épidémiologie : COVID19 - 1ère flambée - estimation du taux de létalité</h1>
+<p>Marie Joigneau, Sabine Lobligeois, Louise Belamy, Maimouna Diarra (M1 Agro Rennes), le 14/03/2021.</p>
+<p>Edité par Frédéric Hamelin, le 23/03/2021.</p>
+<h2 id="introduction">Introduction</h2>
+<p>On se base sur l’étude de l’article suivant : <a href="https://www.mdpi.com/2079-7737/9/5/97">Roques et al. (2020) Using Early Data to Estimate the Actual Infection Fatality Ratio from COVID-19 in France</a>. Le but de notre étude est de reproduire les résultats de l’article avec les données de morts actualisées et publiées par <a href="https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/#_">Santé Publique France</a>.</p>
+<h2 id="modele-epidemiologique">Modèle épidémiologique</h2>
+<p>Dans ce TD, nous allons modéliser la croissance initiale de l'épidémie de COVID19 en France sur la base des données de tests dans un premier temps. Les données concernant les décès seront utilisées dans un second temps pour estimer le taux de létalité de la maladie au début de l'année 2020 en France.</p>
+<p>Les variables du modèle sont : </p>
+<ul>
+<li>
+<script type="math/tex"> S(t) </script> : le nombre de personnes sensibles au temps <script type="math/tex"> t </script>, </li>
+<li>
+<script type="math/tex"> I(t) </script> : le nombre de personnes infectées et infectieuses, </li>
+<li>
+<script type="math/tex"> R(t) </script> : le nombre de personnes rétablies ou guéries,</li>
+<li>
+<script type="math/tex"> D(t) </script> : le nombre de personnes décédées. </li>
+</ul>
+<p>La taille de la population est <script type="math/tex">N=S+I+R</script>. </p>
+<p>Les paramètres du modèles sont </p>
+<ul>
+<li>
+<script type="math/tex"> \beta </script> : le taux de transmission de la maladie, </li>
+<li>
+<script type="math/tex"> \gamma </script> : le taux de guérison,</li>
+<li>
+<script type="math/tex"> \alpha </script> : le taux de mortalité due à la maladie.</li>
+</ul>
+<p>Ce sont des "taux" par unité de temps. </p>
+<p><img alt="plot0" src="../figsTD2/plot0.svg" /></p>
+<p>Le modèle s'écrit :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}S}{\mathrm{d}t}&=&-\beta \frac{I}{N}S\,,\\
+\frac{\mathrm{d}I}{\mathrm{d}t}&=&\beta \frac{I}{N}S - (\alpha+\gamma)I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,,\\
+\frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
+\end{eqnarray}
+</script>
+Pour simplifier l'étude, nous faisons l'hypothèse que le taux de mortalité due à la maladie est très faible et négligeable d'un point de vue épidémiologique devant le taux de guérison <script type="math/tex">(\alpha\ll \gamma)</script>. Cela permet de décomposer le modèle en deux parties, la première étant indépendante des décès :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}S}{\mathrm{d}t}&=&-\beta \frac{I}{N}S\,,\\
+\frac{\mathrm{d}I}{\mathrm{d}t}&\approx&\beta \frac{I}{N}S -\gamma I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,.
+\end{eqnarray}
+</script>
+Elle sera ajustée aux données de tests. La seconde partie du modèle sera ajustée aux données de décès : 
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
+\end{eqnarray}
+</script>
+</p>
+<h2 id="traitement-des-donnees">Traitement des données</h2>
+<p>Commençons par nettoyer l'environnement de travail :</p>
+<pre><code class="language-R">rm(list=ls())  # Efface les variables créées lors des exécutions précédentes
+graphics.off() # Ferme les fenêtres ouvertes lors des exécutions précédentes
+</code></pre>
+<p>On charge les librairies suivantes :</p>
+<pre><code class="language-R">library(deSolve) # pour résoudre le système d'équations différentielles (modèle SIRD)
+library(R.matlab) # pour lire les fichiers de données au format matlab
+library(downloader) # pour faciliter le téléchargement des données
+library(zoo) # pour la moyenne mobile
+library(readr) # pour utiliser la fonction read_csv
+</code></pre>
+<p>On télécharge l'archive contenant les données utilisées par Roques et al 2020 :</p>
+<pre><code class="language-R">download(&quot;https://www.mdpi.com/2079-7737/9/5/97/s1&quot;, dest=&quot;suppMat.zip&quot;, mode=&quot;wb&quot;) 
+</code></pre>
+<p>On décompresse l'archive :</p>
+<pre><code class="language-R">unzip(&quot;dataset.zip&quot;, exdir = &quot;suppMat&quot;)
+</code></pre>
+<p>On récupère les données relatives aux tests (du 1er janvier au 17 mars) :</p>
+<pre><code class="language-R">dataT = readMat(&quot;./suppMat/data_smooth5.mat&quot;)
+
+TP=as.integer(dataT$DATA[1,]) # nombre de tests positifs cumulés
+TT=as.integer(dataT$DATA[2,]) # nombre total de tests cumulés
+
+LT=length(TP) # Longueur de la série temporelle
+</code></pre>
+<p>On récupère les données relatives aux décès (à partir du 2 mars) :</p>
+<pre><code class="language-R">dataD &lt;- read_csv(url(&quot;https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71&quot;))
+dataD[is.na(dataD)]=0 # on remplace les données manquantes par des zéros avant de sommer
+DC=dataD$total_deces_hopital+dataD$total_deces_ehpad # nombre de décès cumulés
+</code></pre>
+<p>On crée un vecteur des décès cumulés du 1er janvier au 17 mars :</p>
+<pre><code class="language-R"># Les données de décès sont disponible à partir du 2 mars
+n=31+29+1 # nombre de jours en janvier + février 2020 + 1 mars
+zeros=rep(0,n) # nombre de zéros à ajouter pour janvier/février
+m=17-1 # la fenêtre de l'étude s'arrête au 17 mars
+DC = c(zeros,DC[1:m]) # les décès cumulés du 1er janvier au 17 mars
+</code></pre>
+<p>On crée un vecteur pour le taux de positivité cumulé :</p>
+<pre><code class="language-R">PP=TP/TT # taux de positivité cumulé
+</code></pre>
+<p>On crée un vecteur temps :</p>
+<pre><code class="language-R">temps=seq.Date(from=as.Date(&quot;2020-01-01&quot;), to=as.Date(&quot;2020-03-17&quot;), by=&quot;days&quot;)
+</code></pre>
+<p>On affiche les tests cumulés en fonction du temps :</p>
+<pre><code class="language-R">plot(temps,TT,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de tests&quot;,col=&quot;black&quot;)
+points(temps,TP,col=&quot;red&quot;)
+legend(&quot;topleft&quot;,c(&quot;Nombre de tests positifs&quot;,&quot;Nombre de tests realises&quot;), fill=c(&quot;red&quot;,&quot;black&quot;))
+title(&quot;Resultats cumules des tests realises de covid 19&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-12-1.png" /></p>
+<p>On affiche la proportion de tests positifs en fonction du temps :</p>
+<pre><code class="language-R">plot(temps,PP,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests positifs&quot;,col=&quot;purple&quot;)
+title(&quot;Proportion de tests positifs en fonction du temps&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-13-1.png" /></p>
+<p>On affiche les décès cumulés en fonction du temps :</p>
+<pre><code class="language-R">plot(temps,DC,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de morts&quot;,col=&quot;orange&quot;)
+title(&quot;Morts cumules du covid 19&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-14-1.png" /></p>
+<p>On retrouve les données non-cumulées en utilisant la fonction <code>diff</code> :</p>
+<pre><code class="language-R">tt=diff(TT) # nombre quotidien de tests réalisés
+tp=diff(TP) # nombre quotidien de tests positifs
+dc=diff(DC) # nombre quotidien de décès
+lt=length(tt) # longueur de la série temporelle (l=L-1)
+</code></pre>
+<p>On utilise donc un intervalle de temps qui commence le 2 janvier 2020 :</p>
+<pre><code class="language-R">temps2=seq.Date(from=as.Date(&quot;2020-01-02&quot;), to=as.Date(&quot;2020-03-17&quot;), by=&quot;days&quot;)
+</code></pre>
+<p>On affiche les tests quotidiens en fonction du temps :</p>
+<pre><code class="language-R">plot(temps2,tt,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de tests quotidiens&quot;,col=&quot;black&quot;)
+points(temps2,tp,col=&quot;red&quot;)
+legend(&quot;topleft&quot;,c(&quot;Nombre de tests positifs&quot;,&quot;Nombre de tests realises&quot;), fill=c(&quot;red&quot;,'black'))
+title(&quot;Resultats des tests quotidiens realises de covid 19&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-17-1.png" /></p>
+<p>On affiche le taux de positivité quotidien :</p>
+<pre><code class="language-R">pp=tp/tt # Proportion quotidienne de tests positifs
+plot(temps2,pp,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;,col=&quot;purple&quot;)
+title(&quot;Proportion de tests positifs en fonction du temps&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-18-1.png" /></p>
+<p>On affiche les décès quotidiens en fonction du temps :</p>
+<pre><code class="language-R">plot(temps2,dc,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de morts&quot;,col=&quot;orange&quot;)
+title(&quot;Morts quotidiens du covid 19&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-19-1.png" /></p>
+<h2 id="ajustement-du-modele-aux-donnees">Ajustement du modèle aux données</h2>
+<p>Les paramètres du modèle sont :</p>
+<pre><code class="language-R">N=67e6; # Taille totale de la pop française
+gamma=1/10; # &quot;taux&quot; de guerison par jour (1/gamma est la periode infectieuse)
+R_0=3; # Reproductivite de la maladie
+beta=gamma*R_0; # R0=beta/alpha (estimation initiale à optimiser)
+
+sigma=0.7;# Sensibilite des tests PCR
+kappa=5e-3# Probabilité relative pour les sensibles de se faire tester comparativement aux infectés (estimation initiale à optimiser)
+</code></pre>
+<p>Les conditions initiales du modèle sont :</p>
+<pre><code class="language-R">I0=1; # On part d'un individu infecté. Ceci est fixé pour la premiere flambée.
+R0=0; # On suppose que personne n'est immunisé dans la population initialement.
+S0=N-I0-R0; # Nombre initial de sensibles (tout le monde sauf le premier infecté)
+X0=c(S0,I0); # Vecteur d'etat
+</code></pre>
+<p>Créons une fonction qui permet de simuler le modèle SIR :</p>
+<pre><code class="language-R">SIR = function(t, X, P){
+
+  beta=P[1] # beta est le premier et unique élément du vecteur des paramètres P
+            # gamma est un paramètre dont la valeur est fixée de façon globale 
+  S=X[1]    # S est le premier élément du vecteur d'état X
+  I=X[2]    # I est le second élément du vecteur d'état X
+
+  y=beta*S*I/N # y est le nombre de nouvelles infections par unité de temps
+  dS = -y # dS/dt : variation du nombre d'individus sains
+  dI = +y - gamma*I # dI/dt : variation du nombre d'individus infectés
+
+  dX=c(dS,dI)
+  return(list(dX)) # la liste dX contient dS et dI les derivées de S et I
+}
+</code></pre>
+<p>Créons une fonction qui permet de calculer la vraisemblance associée à un vecteur de paramètres à optimiser <script type="math/tex"> \theta = \{ \beta, \kappa \} </script>.  </p>
+<pre><code class="language-R">logLike = function(theta){
+    # theta est le vecteur des paramètres
+    beta=theta[1]   # beta est le premier élément du vecteur theta
+    kappa=theta[2]  # kappa est le second élément du vecteur theta
+
+    X=ode(X0,t,SIR,beta)
+    # la fonction ode renvoie les solutions du modele SIR avec beta pour paramètre
+    # X0 est le vecteur des conditions initiales
+    # t est le vecteur des dates d'observations
+    # La fonction ode renvoie un matrice X de la forme :
+    # 1ère colonne : t, 2ème colonne : S(t), 3ème colonne : I(t)
+
+    # Proportion théorique de tests quotidiens positifs (information issue du modele)
+    p=sigma*X[,3]/(X[,3]+kappa*X[,2])
+
+    # On met des zeros avant t0 (en pratique 1e-12 pour eviter log(0) plus bas)
+    p=c(rep(1e-12,t0-1),p) 
+
+    # Probabilite d observer &quot;tp&quot; positifs sachant le nombre de tests &quot;tt&quot; 
+    # et &quot;p(t)&quot; telle que donnée par le modèle (loi binomiale de parametre &quot;pt&quot;)
+    L=dbinom(tp, tt, p, log=TRUE) # Vecteur des vraisemblances (likelihood) 
+    #Log = TRUE car on travaille sur la log-vraisemblance
+
+    LL=sum(L) # Le log transforme le produit des probabilités en somme
+
+    return(LL) # renvoie la Log-vraisemblance associée au jeu de paramètres theta
+}
+</code></pre>
+<p>En plus des paramètres <script type="math/tex"> \beta </script> et <script type="math/tex"> \kappa </script>, nous souhaitons estimer la date initiale de l'épidémie, <script type="math/tex"> t_0 </script>, telle que <script type="math/tex"> I(t_0)=I_0=1 </script>. Comme  <script type="math/tex"> t_0 </script> est un entier, nous le traitons séparément via une boucle d'optimisation qui parcours tous les <script type="math/tex"> t_0 </script> possibles du 2 janvier au 1er février.</p>
+<pre><code class="language-R">V=-1e6 # Valeur initiale de la vraisemblance (à maximiser)
+
+for (t0 in 1:31){ # Boucle d'optimisation sur les t0
+
+  t=t0:lt # Vecteur temps : dates sur lesquelles on simule le modèle
+  theta0=c(beta,kappa) # Vecteur des parametres a estimer (estimations initiales)
+
+  opt=optim(theta0,logLike,control=list(fnscale=-1));
+  # Part d'un point de depart theta0 et suit la plus forte pente (le gradient de la log-vraisemblance en fonction de theta) jusqu'à maximiser la log-vraisemblance (localement) 
+  # Selon le point theta0 de départ que l'on donne le maximum local renvoyé peut varier
+
+  if (opt$value&gt;V){ #Si le t0 considéré augmente la vraisemblance,
+      V=opt$value   #on sauvegarde la vraisemblance ainsi que t0, beta et gamma.
+      t0opt=t0
+      beta=opt$par[1]
+      kappa=opt$par[2]
+  } 
+}
+</code></pre>
+<p>On affiche les paramètres optimaux obtenus :</p>
+<pre><code class="language-R">print(t0opt)
+print(kappa)
+print(beta)
+</code></pre>
+<p>On trouve</p>
+<ul>
+<li>
+<script type="math/tex"> t_0 = 22 </script> jours (soit le 23 janvier),</li>
+<li>
+<script type="math/tex"> \kappa \approx .0004 </script>,</li>
+<li>
+<script type="math/tex"> \beta \approx 0.3 </script>, ce qui permet d'estimer la reproductivité du virus (<script type="math/tex">\mathcal{R}_0</script>), définie comme le nombre d'infections secondaires générées par un individu infecté dans une population initialement naïve :</li>
+</ul>
+<p>
+<script type="math/tex; mode=display">
+\mathcal{R}_0 = \frac{\beta}{\alpha+\gamma}\approx \frac{\beta}{\gamma} \approx 3\,,
+</script>
+</p>
+<p>​       puisque <script type="math/tex"> \gamma=0.1 </script> par jour.</p>
+<p>Ces estimations sont cohérentes avec celles obtenues par <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>. </p>
+<pre><code class="language-R">t=t0opt:lt # nouveau vecteur temps 
+X=ode(X0,t,SIR,beta) # simulation du modèle SIR
+</code></pre>
+<p>La proportion théorique de tests quotidiens positifs est :</p>
+<pre><code class="language-R">p=sigma*X[,3]/(X[,3]+kappa*X[,2]) # p(t) = sigma I(t)/(I(t) + kappa S(t))
+</code></pre>
+<p>Les tests positifs cumulés observés sont :</p>
+<pre><code class="language-R">Sigma1=cumsum(tp[t]) # on reprend les notations de l'article Roques et al (2020)
+</code></pre>
+<p>Tests positifs cumulés théoriques sont :</p>
+<pre><code class="language-R">Sigma2=cumsum(tt[t]*p) # on reprend les notations de l'article Roques et al (2020)
+</code></pre>
+<p>On définit la première flambée entre le 22 janvier et le 17 mars 2020 :</p>
+<pre><code class="language-R">temps3=seq.Date(from=as.Date(&quot;2020-01-23&quot;), to=as.Date(&quot;2020-03-17&quot;), by=&quot;days&quot;)
+</code></pre>
+<p>On affiche le nombre de tests positifs cumulés en fonction du temps :</p>
+<pre><code class="language-R">plot(temps3,Sigma1,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de tests positifs cumules&quot;,col=&quot;black&quot;)
+lines(temps3,Sigma2, col='red')
+legend(&quot;topleft&quot;,c(&quot;D'apres les donnees&quot;,&quot;D'apres le modele&quot;),fill=c('black','red'))
+title(&quot;Comparaison des tests positifs cumules des donnees et du modele&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-31-1.png" /></p>
+<p>On retrouve le graphe de l’article <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a> (Fig. 1) donc l’article est bien reproductible.</p>
+<p>On affiche le nombre de cas infectieux <script type="math/tex"> I(t) </script> et infectés <script type="math/tex"> (N-S(t)) </script> en fonction du temps :</p>
+<pre><code class="language-R">plot(temps3,N-X[,2],col=&quot;red&quot;,type=&quot;l&quot;,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de personnes&quot;)
+lines(temps3,X[,3],col=&quot;purple&quot;)
+lines(temps3,Sigma2)
+points(temps3,Sigma1)
+legend(&quot;topleft&quot;,c(&quot;Nombre de personnes infectees&quot;,&quot;Nombre de personnes infectieuses&quot;,&quot;Nombre de personnes testees positives d'apres les donnees (points)&quot;,&quot;d'apres le modele (courbe)&quot;),fill=c('red','purple','black','black'),cex=0.8)
+title(&quot;Evolution de la pandemie en France lors de la premiere flambee&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-32-1.png" /></p>
+<p>On retrouve approximativement la Figure 2 de l’article <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>.</p>
+<p>On affiche le taux de positivité quotidien :</p>
+<pre><code class="language-R">plot(temps3,pp[t],xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;)
+lines(temps3,p)
+legend(&quot;topleft&quot;,c(&quot;D'apres les donnees (points)&quot;,&quot;D'apres le modele (courbe)&quot;))
+title(&quot;Evolution de la proportion de tests positifs dans le temps&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-33-1.png" /></p>
+<h2 id="estimation-du-taux-de-letalite">Estimation du taux de létalité</h2>
+<p>Le taux de létalité moyen (IFR pour <em>infection fatality ratio</em>) est la proportion de morts parmi les personnes infectées ou la probabilité de mourir des suites de l'infection : 
+<script type="math/tex; mode=display">
+\mbox{IFR}(t)=\frac{\alpha(t)}{\alpha(t)+\gamma}\,.
+</script>
+Nous ne supposons pas qu'il est constant au cours de l'épidémie.</p>
+<p>On estime <script type="math/tex"> \alpha(t) </script> (le taux de mortalité due à la maladie) via la relation suivante : 
+<script type="math/tex; mode=display">
+\alpha(t)=\frac{1}{I(t)}\frac{\mathrm{d} D(t)}{\mathrm{d} t}\,,
+</script>
+où <script type="math/tex"> \mathrm{d}D(t)/\mathrm{d}t </script> est le nombre de décès quotidien.</p>
+<pre><code class="language-R">dc=dc[-(1:(t0opt-1))] # toncation des données de décès à partir de t0
+alpha=dc/X[,3] # estimation de alpha(t) = [dD(t)/dt]/I(t)
+
+IFR=alpha/(gamma+alpha) # taux de létalité (infection fatality ratio)
+</code></pre>
+<p>On affiche le taux de létalité (IFR) brut :</p>
+<pre><code>plot(temps3, IFR, type ="l", xlab="Date (Annee 2020)", ylab="IFR")
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-34-1.png" /></p>
+<p>On réalise une moyenne de l’IFR sur les valeurs non nulles :</p>
+<pre><code class="language-R">w=which(IFR!=0)
+print(mean(IFR[w]))
+</code></pre>
+<p>On obtient un IFR de 0.67%. Cette valeur est comparable à celles estimées par <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>. </p>
+<p>On lisse la sortie en faisant une moyenne mobile sur 5 jours :</p>
+<pre><code class="language-R">IFRlisse &lt;- rollmean(IFR, k=5)
+
+plot(t[1:length(IFRlisse)], IFRlisse, type =&quot;l&quot;, xlab=&quot;Nombre de jours (du 1er janvier 2020 au 12 mars 2020)&quot;, ylab=&quot;IFR&quot;,ylim=c(0,0.01))
+points(t, IFR)
+title(&quot;Evolution de l'IFR (ratio de letalite) lors de la premiere flambee&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD2/unnamed-chunk-35-1.png" /></p>
+<p>Nous obtenons des valeurs d’IFR du même ordre de grandeur (0.8%) et de tendance comparable à l'article de <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
