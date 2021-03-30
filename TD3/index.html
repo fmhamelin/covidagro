@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>TD3 - COVIDAGRO</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">COVIDAGRO</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Bienvenue</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD1/" class="nav-link">TD1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD2/" class="nav-link">TD2</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">TD3</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../TD2/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#introduction-a-la-modelisation-en-epidemiologie-covid-19-dynamique-epidemique-pendant-le-1er-confinement" class="nav-link">Introduction à la modélisation en épidémiologie : COVID-19 - dynamique épidémique pendant le 1er confinement</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#modele-epidemiologique" class="nav-link">Modèle épidémiologique</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#telechargement-et-traitement-des-donnees" class="nav-link">Téléchargement et traitement des données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#simulations-et-ajustement-du-modele-aux-donnees" class="nav-link">Simulations et ajustement du modèle aux données</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#estimation-de-la-fraction-de-la-population-infectee" class="nav-link">Estimation de la fraction de la population infectée</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction-a-la-modelisation-en-epidemiologie-covid-19-dynamique-epidemique-pendant-le-1er-confinement">Introduction à la modélisation en épidémiologie : COVID-19 - dynamique épidémique pendant le 1er confinement</h1>
+<p>Frédéric Hamelin, le 10 mai 2020. </p>
+<p>Mis à jour le 30 mars 2021 d'après l'<a href="https://demecology.shinyapps.io/Covid-19/">application</a> de Maimouna Diarra (élève ingénieure M1 Agro Rennes 2021) basée sur la <a href="http://f.m.hamelin.free.fr/covid-19.html">version précédente</a> du TD.</p>
+<hr />
+<p>Dans l'épidémie de COVID-19, les individus infectés peuvent être symptomatiques ou asymptomatiques. Les données sur le nombre d'individus infectés dans la population sont peu fiables car elles dépendent des tests éventuellement réalisés. Les individus symptomatiques peuvent faire une forme sévère de la maladie et être hospitalisés. Les <a href="https://www.data.gouv.fr/fr/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/">données</a> concernant les individus hospitalisés sont fiables en principe.</p>
+<h2 id="modele-epidemiologique">Modèle épidémiologique</h2>
+<p>Nous ferons un certain nombre d'hypothèses volontairement grossières pour simplifier l'étude en première approximation. Ces hypothèses incluent :</p>
+<ul>
+<li>la population française est spatialement homogène en France métropolitaine,</li>
+<li>les hommes et les femmes sont égaux vis-à-vis du virus,</li>
+<li>la structure en âge de la population peut être ignorée pour modéliser l'épidémie, </li>
+<li>les individus hospitalisés ne transmettent plus l'infection,</li>
+<li>la guérison confère une immunité permanente.</li>
+</ul>
+<p>Ces hypothèses sont plus que grossières mais permettent néanmoins de commencer à travailler. Techniquement, cela nous permettra de limiter le nombre de paramètres à estimer. Autrement, le modèle risquerait d'être sur-paramétré au regard des données et des connaissances dont on dispose sur le virus.  </p>
+<p>Nous définissons les variables </p>
+<ul>
+<li>
+<script type="math/tex"> S(t)</script> : nombre d'individus sensibles au virus (non-infectés) à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> I(t) </script> : nombre d'individus infectés et infectieux non-hospitalisés à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> H(t)​ </script> : nombre d'individus infectés hospitalisés à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> R(t)​ </script> : nombre d'individus "retirés" de l'épidémie (guéris et immunisés ou décédés) à la date <script type="math/tex"> t </script>,</li>
+</ul>
+<p>et les paramètres</p>
+<ul>
+<li>
+<script type="math/tex"> \beta​ </script> : taux de transmission par unité de temps (fréquence des contacts ​<script type="math/tex"> \times​ </script> probabilité d'infection),</li>
+<li>
+<script type="math/tex"> \rho​ </script> : taux de "guérison" par unité de temps (inverse du temps moyen avant guérison ou décès),</li>
+<li>
+<script type="math/tex"> \alpha​ </script> : taux d'hospitalisation par unité de temps (inverse du temps moyen avant hospitalisation),</li>
+<li>
+<script type="math/tex"> \gamma​ </script> : taux de guérison ou décès à l'hôpital (inverse du temps moyen avant sortie de l'hôpital).</li>
+</ul>
+<p>Nous considérons le <a href="https://fr.wikipedia.org/wiki/Mod%C3%A8les_compartimentaux_en_%C3%A9pid%C3%A9miologie">modèle compartimental</a> suivant :</p>
+<p><img alt="" src="../figsTD3/plot0.svg" /></p>
+<p>ce qui se traduit mathématiquement par le système d'équations différentielles suivant :
+<script type="math/tex; mode=display">
+\begin{eqnarray*}
+\frac{\mathrm{d} S}{\mathrm{d} t} &=& -\beta \frac{S}{N} I\,,\\
+\frac{\mathrm{d} I}{\mathrm{d} t} &=& +\beta \frac{S}{N} I - (\alpha+\rho) I\,,\\
+\frac{\mathrm{d} H}{\mathrm{d} t} &=& \alpha I - \gamma H\,,\\
+\frac{\mathrm{d} R}{\mathrm{d} t} &=& \rho I+ \gamma H\,.
+\end{eqnarray*}
+</script>
+</p>
+<p>ce qui peut se lire comme suit :
+<script type="math/tex; mode=display">
+\begin{eqnarray*}
+\text{variation du nombre d'individus sensibles} &=& - \text{ nouvelles infections}\\
+\text{variation du nombre d'individus infectés} &=& + \text{ nouvelles infections } - \text{guérisons} - \text{hospitalisations}\\
+\text{variation du nombre d'individus hospitalisés} &=& + \text{ hospitalisations } - \text{sorties suite à guérisons ou décès}\\
+\text{variation du nombre d'individus retirés} &=& + \text{ guérisons } + \text{ sorties suite à guérisons ou décès}
+\end{eqnarray*}
+</script>
+La taille de la population est définie comme
+<script type="math/tex; mode=display">
+N= S+I+H+R=\mbox{constante}\,.
+</script>
+Chaque individu infecté réalise un certain nombre de contacts avec d'autres individus par unité de temps (c'est la fréquence des contacts). Pour chaque contact, la probabilité de rencontrer un individu sensible est égale à la proportion que représentent les individus sensibles dans la population : <script type="math/tex"> S/N​ </script>. Ainsi le nombre de nouvelles infections par unité de temps est <script type="math/tex"> \beta SI/N </script>.</p>
+<p>La <a href="https://fr.wikipedia.org/wiki/Nombre_de_reproduction_de_base">reproductivité</a> du pathogène est défini comme
+<script type="math/tex; mode=display">
+\mathcal R_0 = \frac{\beta}{\alpha+\rho}\frac{S(0)}{N}\,.
+</script>
+C'est le nombre d'infections secondaires générées par un individu infecté dans la population initiale :</p>
+<ul>
+<li>si <script type="math/tex"> \mathcal R_0>1​ </script> une vague épidémique se forme.</li>
+<li>si <script type="math/tex"> \mathcal R_0<1​</script> l'épidémie s'éteint progressivement.</li>
+</ul>
+<p>La probabilité d'être hospitalisé suite à l'infection est
+<script type="math/tex; mode=display">
+p = \frac{\alpha}{\alpha+\rho}\,.
+</script>
+Nous allons maintenant tenter d'ajuster ce modèle aux données de COVID-19 en France sous R. Ces données concernent le nombre de personnes hospitalisées à la date <script type="math/tex"> t​ </script>, <script type="math/tex"> H(t)​ </script>, ainsi que le nombre d'admissions à l'hôpital à la date <script type="math/tex"> t </script> (par unité de temps) :
+<script type="math/tex; mode=display">
+A(t)=\alpha I(t)\,.
+</script>
+Le modèle épidémiologique est à base d'équations différentielles ordinaires (<em>ordinary differential equations</em>). Les simulations se baseront sur la fonction <code>ode</code> de la librairie <code>deSolve</code> de R à importer en début de script.</p>
+<pre><code class="language-R">library(deSolve) # Import de la fonction ode
+</code></pre>
+<p>Commençons par nettoyer l'environnement de travail :</p>
+<pre><code class="language-R">rm(list=ls())   # Efface les variables créées lors des exécutions précédentes
+graphics.off()  # Ferme les fenêtres ouvertes lors des exécutions précédentes
+</code></pre>
+<hr />
+<h2 id="telechargement-et-traitement-des-donnees">Téléchargement et traitement des données</h2>
+<p>Les données sont disponibles sur le site suivant :</p>
+<p><a href="https://www.data.gouv.fr/fr/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/">https://www.data.gouv.fr/fr/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/</a></p>
+<p>Nous baserons notre travail sur les données hospitalières suivantes (à la date du TD) :</p>
+<ul>
+<li><strong>donnees-hospitalieres-covid19-2020-05-10-19h00.csv</strong></li>
+<li><strong>donnees-hospitalieres-nouveaux-covid19-2020-05-10-19h00.csv</strong></li>
+</ul>
+<p>Importons les données sous R :</p>
+<pre><code class="language-R"># Lien permanent vers les données d'hospitalisations
+urlH = url(&quot;https://www.data.gouv.fr/fr/datasets/r/63352e38-d353-4b54-bfd1-f1b3ee1cabd7&quot;)
+# Lien permanent vers les données d'admissions
+urlA = url(&quot;https://www.data.gouv.fr/fr/datasets/r/6fadff46-9efd-4c53-942a-54aca783c30c&quot;)
+
+# Nombre d'individus hospitalisés (H) - à partir du 19 mars
+dataH = read.csv2(urlH, header=TRUE, sep=&quot;;&quot;)
+# Nombre d'admissions (A) à l'hôpital par jour
+dataA = read.csv2(urlA, header=TRUE, sep=&quot;;&quot;) 
+</code></pre>
+<p>Vérification de la nature des variables :</p>
+<pre><code class="language-R">str(dataH) # la fonction str () permet de nous renseigner sur la nature de chaque 
+str(dataA) # variable contenue dans les tableaux
+</code></pre>
+<p>On remarque que la variable “jour” est considérée comme un facteur. Nous allons donc la convertir en date pour faciliter le triage des données  quand on a va définir la fenêtre temporelle d'étude.</p>
+<pre><code class="language-R">dataH$jour = as.Date(dataH$jour) # conversion de variable jour en date 
+dataA$jour = as.Date(dataA$jour) 
+</code></pre>
+<p>La deuxième colonne du jeu de données "H" distingue les hommes et les femmes par des 1 et des 2. Comme le modèle n'est pas structuré selon ces catégories, nous ne conserverons que les lignes 0 qui agrègent hommes et femmes :  </p>
+<pre><code class="language-R">dataH = dataH[dataH$sexe==0,] # pas de distinction entre les hommes et les femmes en selectionnant uniquement les lignes 0 de la colonne &quot;sexe&quot;
+</code></pre>
+<p>Pour ce qui suit, nous ne conserverons que les informations relatives aux hospitalisations, décès et guérisons, par départements :</p>
+<pre><code class="language-R">dataH = dataH[,c(-2,-6,-7)] # on élimine les colonnes suivantes: &quot;sexe&quot;, &quot;rad&quot; et &quot;dc&quot; 
+dataA = dataA[,c(-4,-5,-6)] # on élimine &quot;incid_rea&quot;, &quot;incid_dc&quot; et &quot;incid_rad&quot; 
+</code></pre>
+<p>Pour cette étape, nous voulons sélectionner uniquement les données qui  se trouvent entre le 19/03/2020 et le 11/05/2020 pour les départements  métropolitains en excluant la Corse :</p>
+<pre><code class="language-R"># on définit notre fenêtre temporelle 
+dataH = dataH[dataH$jour&gt;&quot;2020-03-19&quot; &amp; dataH$jour&lt;&quot;2020-05-11&quot;, ]
+dataA = dataA[dataA$jour&gt;&quot;2020-03-19&quot; &amp; dataA$jour&lt;&quot;2020-05-11&quot;, ]
+# sélection des départements métropolitains
+dataH = dataH[(dataH$dep!=&quot;971&quot;)&amp;(dataH$dep!=&quot;972&quot;)&amp;(dataH$dep!=&quot;973&quot;)&amp;(dataH$dep!=&quot;974&quot;)&amp;(dataH$dep!=&quot;976&quot;)&amp;(dataH$dep!=&quot;2A&quot;)&amp;(dataH$dep!=&quot;2B&quot;),] 
+dataA = dataA[(dataA$dep!=&quot;971&quot;)&amp;(dataA$dep!=&quot;972&quot;)&amp;(dataA$dep!=&quot;973&quot;)&amp;(dataA$dep!=&quot;974&quot;)&amp;(dataA$dep!=&quot;976&quot;)&amp;(dataA$dep!=&quot;2A&quot;)&amp;(dataA$dep!=&quot;2B&quot;),]
+</code></pre>
+<p>Agrégation des données à l'échelle de la France par jour :</p>
+<pre><code class="language-R"># on utilise la fonction aggregate pour additionner le nombre d'hospitalisés par jour
+dataHH = aggregate(hosp ~ jour, data = dataH, FUN = sum) 
+dataAA = aggregate(incid_hosp~ jour, data = dataA, FUN = sum)  # idem pour les admissions 
+</code></pre>
+<p>Construction de 2 nouveaux vecteurs qui contiennent uniquement les données qui nous intéressent :</p>
+<pre><code class="language-R">H = dataHH[,c(2)] # vecteur des hospitalisations
+A = dataAA[,c(2)] # vecteur des admissions 
+</code></pre>
+<p>Construisons un vecteur temps qui va correspondre à l'ordonnée de nos graphiques :</p>
+<pre><code class="language-R">L = length(dataHH$jour) # longueur de la série temporelle
+t = seq(0,L-1,1) # vecteur temps allant de 0 à L par pas de 1
+</code></pre>
+<p>Affichons le nombre de personnes hospitalisées en fonction du temps :</p>
+<pre><code class="language-R">plot(t,H,col=&quot;blue&quot;,xlab=&quot;Temps écoulé depuis le 19 mars (en jours)&quot;, 
+     ylab=&quot;Nombre de personnes hospitalisées&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD3/plot1.svg" /></p>
+<p>Affichons les admissions quotidiennes en fonction du temps :</p>
+<pre><code class="language-R">plot(t,A,xlab=&quot;Temps écoulé depuis le 19 mars (en jours)&quot;,
+     ylab=&quot;Nombre d'admissions à l'hôpital (par jour)&quot;,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD3/plot2.svg" /></p>
+<p>Comme le confinement a débuté le 17 mars, la tendance croissante des deux premières semaines suit probablement une dynamique de transition suite à la mise en place du confinement. </p>
+<p>Comme le modèle épidémiologique suppose que les paramètres épidémiologiques sont constants, en particulier le taux de transmission du virus, nous commencerons les analyses 15 jours après le début du confinement, soit à partir du 1er avril :</p>
+<pre><code class="language-R">T0 = 13 # Décalage du point de départ 13 jours après le 19 mars (le 1er avril) 
+H = H[T0:L];A=A[T0:L] # Troncations des données
+L = length(H) # Mise à jour de la longueur des séries temporelles
+t = seq(0,L-1,1) # et du vecteur temps
+</code></pre>
+<p>Visualisation des données tronquées à partir du 1er avril :</p>
+<pre><code class="language-R">plot(t,H,xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,
+     ylab=&quot;Nombre de personnes hospitalisées&quot;,col=&quot;blue&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD3/plot3.svg" /></p>
+<pre><code class="language-R">plot(t,A,xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,
+     ylab=&quot;Nombre d'admissions à l'hôpital (par jour)&quot;,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD3/plot4.svg" /></p>
+<hr />
+<h2 id="simulations-et-ajustement-du-modele-aux-donnees">Simulations et ajustement du modèle aux données</h2>
+<h3 id="resolution-numerique-du-modele-epidemiologique">Résolution numérique du modèle épidémiologique</h3>
+<p>Commençons par définir les paramètres du modèle épidémiologique. Les valeurs données aux paramètres à estimer sont de grossières estimations initiales (ordres de grandeurs approximatifs). </p>
+<p>Pour que le problème d'estimation des paramètres soit bien posé (c'est-à-dire pour que le modèle ne soit pas sur-paramétré par rapport aux données utilisées), il faut à minima fixer la valeur d'un paramètre (<a href="https://arxiv.org/abs/2103.04614">H. et al 2021</a>). La période infectieuse a été estimée à 10.91 jours en moyenne (avec un écart-type de 3.95 jours) en Chine (<a href="https://www.medrxiv.org/content/10.1101/2020.02.08.20021253v2">You et al 2020</a>). Nous retiendrons la valeur moyenne.</p>
+<p>En pratique cependant, nous ne pourrons estimer que le nombre de personnes retirées de la dynamique épidémique <strong>durant le confinement</strong> : <script type="math/tex"> R(t)-R(0)​ </script>. Nous ne pourrons pas estimer la proportion de la population initialement immunisée (ou retirée) au 1er avril : <script type="math/tex"> R(0) </script>. Néanmoins, les résultats que nous obtiendrons seront indépendants de la valeur initiale donnée à <script type="math/tex"> R(0) </script>, comme vous pourrez le vérifier.</p>
+<pre><code class="language-R">N = 64e6                    # Population hexagonale approximative
+rho = 1/10                  # Temps moyen avant guérison ou décès : 10 jours
+gamma = 1/14                # Durée moyenne de l'hospitalisation : 14 jours
+R_0 = 1                     # Reproductivité du virus en confinement
+beta = R_0*rho              # Taux de transmission (calcul très approximatif)
+p = 0.1                     # Probabilité d'être hospitalisé suite à l'infection
+alpha = p*rho/(1-p)         # Taux d'hospitalisation
+P0 = c(beta,alpha,gamma)    # Vecteur des paramètres
+</code></pre>
+<p>Définissons ensuite les variables du modèle et les conditions initiales (au 1er avril) :</p>
+<pre><code class="language-R">H0 = H[1]       # Le nombre de personnes hospitalisées au 1er avril
+I0 = A[1]/alpha # Les admissions correspondent à A(t) = alpha*I(t)
+R0 = N*0.01     # C'est la grande inconnue : mettons 1% d'immunisés 
+S0 = N-I0-H0-R0 # La taille de la population sensible au 1er avril
+X0 = c(S0,I0,H0)# Vecteur d'état - pas besoin de simuler R=N-(S+I+H)
+</code></pre>
+<p>Définissons la fonction <code>SIHR</code> qui prend en arguments 3 vecteurs : temps, variables d'états, et paramètres :</p>
+<pre><code class="language-R">SIHR = function(t, X, P){
+  beta = P[1]           # Le taux de transmission
+  alpha = P[2]          # Le taux d'hospitalisation
+  gamma = P[3]          # Le taux de sortie d'hôpital
+
+  S=X[1];I=X[2];H=X[3]  # Le vecteur d'état X contient: S, I et H
+
+  y = beta*S*I/N        # Le nombre de nouvelles infections par jour
+  dS = -y               # On exprime dS/dt = - beta*S*I
+  dI = y-(alpha+rho)*I  # On exprime dI/dt = beta*S*I - (alpha+rho)*I
+  dH = alpha*I -gamma*H # On exprime dH/dt = alpha*I - gamma*H
+
+  dX=c(dS,dI,dH)        # Renvoie dX/dt tel que demandé par la fonction ode
+  return(list(dX))
+}
+</code></pre>
+<p>Nous sommes intéressés par identifier les paramètres <script type="math/tex"> (\alpha,\beta,\gamma​) </script> et l'état initial du système (en particulier le nombre d'individus initialement infectés <script type="math/tex"> I(0) </script> dans la population) qui sont les plus vraisemblables d'après les données. La <a href="https://fr.wikipedia.org/wiki/Fonction_de_vraisemblance">vraisemblance</a> d'un jeu de paramètres et de conditions initiales à estimer est la probabilité d'observer les données sachant ces paramètres et conditions initiales. Pour pouvoir calculer cette probabilité, il faut modéliser le processus d'observation de façon stochastique (avec variables aléatoires).</p>
+<h3 id="modele-dobservation">Modèle d'observation</h3>
+<p>Nous considérerons le modèle d'observation le plus simple qui soit pour des données de comptage : un tirage aléatoire dans une <a href="https://fr.wikipedia.org/wiki/Loi_de_Poisson">distribution de Poisson</a>. Plus précisément, nous considérerons que le nombre de nouvelles hospitalisations à la date <script type="math/tex"> t </script> est une variable aléatoire discrète distribuée selon une loi de Poisson de moyenne <script type="math/tex"> A(t)​ </script>. De la même façon, nous considérerons que le nombre de personnes hospitalisées à la date <script type="math/tex"> t ​</script> est tiré dans une loi de Poisson de moyenne ​<script type="math/tex"> H(t)​ </script> (à vrai dire, ce sont plutôt les sorties d'hôpital ​<script type="math/tex"> \gamma H(t)​ </script> qui devraient être modélisées de la sorte ; nous pourrons également tester cette variante ensuite).</p>
+<p>Appelons <script type="math/tex"> \theta​ </script> le vecteur des paramètres et conditions initiales à estimer : 
+<script type="math/tex; mode=display">
+\theta=\{\alpha,\beta,\gamma,S(0),I(0),H(0)\}\,.
+</script>
+Sous l'hypothèse (discutable) que les observations sont indépendantes conditionnellement au modèle épidémiologique (ce qui veut dire "sachant la dynamique prédite par le modèle théorique"), la vraisemblance (<em>likelihood</em>) peut s'écrire :
+<script type="math/tex; mode=display">
+\mathcal{L}\left(\theta\right)=\prod_{t=0}^T \text{Pr}(\text{observer A admissions le jour }t| A(t))\times\text{Pr}(\text{observer H hospitalisations le jour }t|H(t))\,.
+</script>
+Comme la fonction logarithme est monotone croissante, trouver le vecteur <script type="math/tex"> \theta​ </script> qui maximise ​<script type="math/tex"> \mathcal L(\theta) </script> est équivalent à trouver le vecteur ​<script type="math/tex"> \theta​ </script> qui maximise la log-vraisemblance (<em>log-likelihood</em>) ​<script type="math/tex"> \log\mathcal{L}(\theta) </script> qui est plus communément utilisée en pratique.</p>
+<h3 id="maximisation-de-la-vraisemblance">Maximisation de la vraisemblance</h3>
+<p>Construisons une fonction qui calcule la log-vraisemblance d'un jeu de paramètres et de conditions initiales. Cette fonction prend en argument le vecteur des paramètres et des conditions initiales à estimer :</p>
+<pre><code class="language-R">logLike=function(theta){
+    P = theta[1:3]          # Les paramètres beta, alpha, et gamma
+    X0 = theta[4:6]         # Mise à jour des conditions initiales 
+
+    X = ode(X0,t,SIHR,P)    # Résolution du système d'EDO (modèle SIHR)
+
+    h = X[,4]               # Hospitalisation théoriques : H(t)
+    a = P[2]*X[,3]          # Admissions théoriques : alpha*I(t)
+
+    LLH = dpois(H,h,log=T)  # Probabilité d'observer H (loi de Poisson)
+    LLA = dpois(A,a,log=T)  # Probabilité d'observer A (Poisson)
+    LL = sum(c(LLH,LLA))    # Log transforme produit des probas en somme
+    return(LL)              # Renvoie la log-vraisemblance (likelihood)
+}
+</code></pre>
+<p>Avant d'appeler les fonctions ci-dessus, on définit le vecteurs des paramètres et conditions initiales :</p>
+<pre><code class="language-R">theta0 = c(P0,X0)           # Concatène paramètres et conditions initiales
+</code></pre>
+<p>Utilisons la fonction <code>optim</code> pour trouver les paramètres et conditions initiales qui maximisent la vraisemblance du modèle.</p>
+<pre><code class="language-R">opt = optim(theta0,logLike,control=list(fnscale=-1)) # Maximise logLike 
+</code></pre>
+<h3 id="resultats">Résultats</h3>
+<p>On récupère les paramètres et conditions initiales dont la vraisemblance est maximale :</p>
+<pre><code class="language-R"># Les paramètres optimaux
+beta = opt$par[1]; alpha = opt$par[2]; gamma = opt$par[3]
+# Les conditions initiales optimales
+S0 = opt$par[4]; I0=opt$par[5]; H0 = opt$par[6]     
+</code></pre>
+<p>On met à jour les vecteurs des paramètres et conditions initiales :</p>
+<pre><code class="language-R">X0 = c(S0,I0,H0)                    # Vecteur des conditions initiales
+P0 = c(beta,alpha,gamma)            # Vecteur des paramètres mis à jour
+</code></pre>
+<p>On affiche trois quantités importantes : </p>
+<pre><code class="language-R">R_0=beta/(alpha+rho)*S0/N       # Reproductivité estimée
+print(R_0)
+p=alpha/(alpha+rho)             # Probabilité d'être hospitalisé 
+print(p)    
+print(1/gamma);                 # Temps moyen d'hospitalisation
+</code></pre>
+<p>On trouve :</p>
+<ul>
+<li>Nombre de reproduction de base (en confinement) : <script type="math/tex"> \mathcal R_0 \approx 0.65​ </script>
+</li>
+<li>Probabilité d'être hospitalisé suite à l'infection : <script type="math/tex"> p \approx 0.07 ​</script>
+</li>
+<li>Temps moyen d'hospitalisation : <script type="math/tex"> \frac{1}{\gamma} \approx 17​ </script> jours</li>
+</ul>
+<p>La valeur de <script type="math/tex"> \mathcal R_0​ </script> est globalement cohérente avec celles estimées par les études listées dans les Références, et n'est pas surprenante en période de confinement (<script type="math/tex">\mathcal R_0<1</script>).</p>
+<p>On calcule la solution du modèle pour les paramètres et conditions initiales estimés :</p>
+<pre><code class="language-R">T = 120; t = 0:T        # Mise à jour du vecteur temps
+X = ode(X0,t,SIHR,P0)   # Calcul de la solution optimale
+</code></pre>
+<p>On compare visuellement la solution du modèle et les observations :</p>
+<pre><code class="language-R"># Affiche le nombre d'individus hospitalisés (données et modèle)
+plot(0:(L-1),H,xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,
+     ylab=&quot;Nombre de personnes hospitalisées&quot;,col=&quot;blue&quot;)       
+lines(X[,1],X[,4])
+</code></pre>
+<p><img alt="" src="../figsTD3/plot5.svg" /></p>
+<pre><code class="language-R">plot(0:(L-1),A,xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,
+     ylab=&quot;Nombre de nouvelles hospitalisations (par jour)&quot;,col=&quot;red&quot;)
+lines(X[,1],alpha*X[,3])
+</code></pre>
+<p><img alt="" src="../figsTD3/plot6.svg" /></p>
+<hr />
+<h2 id="estimation-de-la-fraction-de-la-population-infectee">Estimation de la fraction de la population infectée</h2>
+<p>"Prédire est un art difficile, surtout en ce qui concerne l'avenir". Néanmoins, juste pour prendre du recul sur la dynamique épidémique, nous pouvons extrapoler les dynamiques précédentes sur un horizon de 4 mois (ce qui correspondrait à la dynamique prédite si nous devions rester confinés jusque fin juillet) :</p>
+<pre><code class="language-R">plot(0:(L-1),H,xlim=c(0,T),ylim=c(0,max(H)),xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;, ylab=&quot;Nombre de personnes hospitalisées&quot;,col=&quot;blue&quot;)
+lines(X[,1],X[,4])
+</code></pre>
+<p><img alt="" src="../figsTD3/plot7.svg" /></p>
+<pre><code class="language-R">plot(0:(L-1),A,xlim=c(0,T),ylim=c(0,max(A)),xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;, ylab=&quot;Nombre d'admissions à l'hôpital (par jour)&quot;,col=&quot;red&quot;)
+lines(X[,1],alpha*X[,3])
+</code></pre>
+<p><img alt="" src="../figsTD3/plot8.svg" /></p>
+<p>Enfin, on peut afficher la fraction de la population qui a été infectée par le virus <strong>durant le confinement</strong> (depuis le premier avril) et est donc immunisée ou en voie de l'être le 10 mai (sans décompter les décès) :
+<script type="math/tex; mode=display">
+F(t)\approx\frac{N-S(t)-R(0)}{N}.
+</script>
+</p>
+<pre><code class="language-R">le10mai=length(H)
+F=(N-X[,2]-R0)/N # Fraction de la population qui a été infectée durant le confinement
+plot(le10mai,F[le10mai],xlim=c(0,T),ylim=c(0,max(F)),xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,
+     ylab=&quot;Fraction de la population infectée&quot;);
+lines(X[,1],F,col=&quot;red&quot;)
+</code></pre>
+<p><img alt="" src="\figsTD3\plot9.svg" /></p>
+<p>On voit qu'environ 1,5% de la population aurait été infectée <strong>durant le confinement</strong> (depuis le 1er avril) selon le modèle, soit 960 000 personnes environ. Cela ne dit rien de la proportion d'immunisés dans la population, car il faut rajouter les immunisés au 1er avril, <script type="math/tex"> R(0)​ </script>, qui est inaccessible par cette seule étude. </p>
+<p>En comparaison, <a href="https://hal.archives-ouvertes.fr/hal-02550441/document">Roques <em>et al</em> (2020)</a> estiment la proportion de la population infectée durant cette même période (du 1er avril au 10 mai) à 3.7% (95%-CI: 3.0-4.8%), sur la base de jeux de données différents (tests et décès). Cependant, <a href="https://hal-pasteur.archives-ouvertes.fr/pasteur-02548181/document">Salje <em>et al</em> (2020)</a> estiment qu'environ 1% (entre 0,5% et 2%) de la population aurait été infectée sur la même période (Figure 3 ; panel E).</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
