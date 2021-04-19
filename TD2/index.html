@@ -176,7 +176,7 @@ library(readr) # pour utiliser la fonction read_csv
 <pre><code class="language-R">download(&quot;https://www.mdpi.com/2079-7737/9/5/97/s1&quot;, dest=&quot;suppMat.zip&quot;, mode=&quot;wb&quot;) 
 </code></pre>
 <p>On décompresse l'archive :</p>
-<pre><code class="language-R">unzip(&quot;dataset.zip&quot;, exdir = &quot;suppMat&quot;)
+<pre><code class="language-R">unzip(&quot;suppMat.zip&quot;, exdir = &quot;suppMat&quot;)
 </code></pre>
 <p>On récupère les données relatives aux tests (du 1er janvier au 17 mars) :</p>
 <pre><code class="language-R">dataT = readMat(&quot;./suppMat/data_smooth5.mat&quot;)
