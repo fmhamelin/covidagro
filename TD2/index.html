@@ -108,7 +108,7 @@
 
 <h1 id="introduction-a-la-modelisation-en-epidemiologie-covid-19-1ere-flambee-estimation-du-taux-de-letalite">Introduction à la modélisation en épidémiologie : COVID-19 - 1ère flambée - estimation du taux de létalité</h1>
 <p>Marie Joigneau, Sabine Lobligeois, Louise Belamy, Maimouna Diarra (M1 Agro Rennes), le 14/03/2021.</p>
-<p>Edité par Frédéric Hamelin, le 23/03/2021.</p>
+<p>Edité par Frédéric Hamelin et Marine Dorand (M1 MODE), le 23/04/2021.</p>
 <hr />
 <p>On se base sur l’étude de l’article suivant : <a href="https://www.mdpi.com/2079-7737/9/5/97">Roques et al. (2020) Using Early Data to Estimate the Actual Infection Fatality Ratio from COVID-19 in France</a>. Le but de notre étude est de reproduire les résultats de l’article avec les données de morts actualisées et publiées par <a href="https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/#_">Santé Publique France</a>.</p>
 <h2 id="modele-epidemiologique">Modèle épidémiologique</h2>
@@ -210,17 +210,17 @@ points(temps,TP,col=&quot;red&quot;)
 legend(&quot;topleft&quot;,c(&quot;Nombre de tests positifs&quot;,&quot;Nombre de tests realises&quot;), fill=c(&quot;red&quot;,&quot;black&quot;))
 title(&quot;Resultats cumules des tests realises de covid 19&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-12-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot1.svg" /></p>
 <p>On affiche la proportion de tests positifs en fonction du temps :</p>
 <pre><code class="language-R">plot(temps,PP,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests positifs&quot;,col=&quot;purple&quot;)
 title(&quot;Proportion de tests positifs en fonction du temps&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-13-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot2.svg" /></p>
 <p>On affiche les décès cumulés en fonction du temps :</p>
 <pre><code class="language-R">plot(temps,DC,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de morts&quot;,col=&quot;orange&quot;)
 title(&quot;Morts cumules du covid 19&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-14-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot3.svg" /></p>
 <p>On retrouve les données non-cumulées en utilisant la fonction <code>diff</code> :</p>
 <pre><code class="language-R">tt=diff(TT) # nombre quotidien de tests réalisés
 tp=diff(TP) # nombre quotidien de tests positifs
@@ -236,18 +236,18 @@ points(temps2,tp,col=&quot;red&quot;)
 legend(&quot;topleft&quot;,c(&quot;Nombre de tests positifs&quot;,&quot;Nombre de tests realises&quot;), fill=c(&quot;red&quot;,'black'))
 title(&quot;Resultats des tests quotidiens realises de covid 19&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-17-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot4.svg" /></p>
 <p>On affiche le taux de positivité quotidien :</p>
 <pre><code class="language-R">pp=tp/tt # Proportion quotidienne de tests positifs
 plot(temps2,pp,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;,col=&quot;purple&quot;)
 title(&quot;Proportion de tests positifs en fonction du temps&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-18-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot5.svg" /></p>
 <p>On affiche les décès quotidiens en fonction du temps :</p>
 <pre><code class="language-R">plot(temps2,dc,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de morts&quot;,col=&quot;orange&quot;)
 title(&quot;Morts quotidiens du covid 19&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-19-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot6.svg" /></p>
 <h2 id="ajustement-du-modele-aux-donnees">Ajustement du modèle aux données</h2>
 <p>Les paramètres du modèle sont :</p>
 <pre><code class="language-R">N=67e6; # Taille totale de la pop française
@@ -371,7 +371,7 @@ lines(temps3,Sigma2, col='red')
 legend(&quot;topleft&quot;,c(&quot;D'apres les donnees&quot;,&quot;D'apres le modele&quot;),fill=c('black','red'))
 title(&quot;Comparaison des tests positifs cumules des donnees et du modele&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-31-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot7.svg" /></p>
 <p>On retrouve le graphe de l’article <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a> (Fig. 1) donc l’article est bien reproductible.</p>
 <p>On affiche le nombre de cas infectieux <script type="math/tex"> I(t) </script> et infectés <script type="math/tex"> (N-S(t)) </script> en fonction du temps :</p>
 <pre><code class="language-R">plot(temps3,N-X[,2],col=&quot;red&quot;,type=&quot;l&quot;,xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Nombre de personnes&quot;)
@@ -381,15 +381,15 @@ points(temps3,Sigma1)
 legend(&quot;topleft&quot;,c(&quot;Nombre de personnes infectees&quot;,&quot;Nombre de personnes infectieuses&quot;,&quot;Nombre de personnes testees positives d'apres les donnees (points)&quot;,&quot;d'apres le modele (courbe)&quot;),fill=c('red','purple','black','black'),cex=0.8)
 title(&quot;Evolution de la pandemie en France lors de la premiere flambee&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-32-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot8.svg" /></p>
 <p>On retrouve approximativement la Figure 2 de l’article <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>.</p>
 <p>On affiche le taux de positivité quotidien :</p>
-<pre><code class="language-R">plot(temps3,pp[t],xlab=&quot;Date (Annee 2020)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;)
+<pre><code class="language-R">plot(temps3,pp[t],xlab=&quot;Date (Année 2020)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;)
 lines(temps3,p)
-legend(&quot;topleft&quot;,c(&quot;D'apres les donnees (points)&quot;,&quot;D'apres le modele (courbe)&quot;))
+legend(&quot;topleft&quot;,c(&quot;D'après les données (points)&quot;,&quot;D'après le modèle (courbe)&quot;),)
 title(&quot;Evolution de la proportion de tests positifs dans le temps&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-33-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot9.svg" /></p>
 <h2 id="estimation-du-taux-de-letalite">Estimation du taux de létalité</h2>
 <p>Le taux de létalité moyen (IFR pour <em>infection fatality ratio</em>) est la proportion de morts parmi les personnes infectées ou la probabilité de mourir des suites de l'infection : 
 <script type="math/tex; mode=display">
@@ -407,22 +407,23 @@ alpha=dc/X[,3] # estimation de alpha(t) = [dD(t)/dt]/I(t)
 IFR=alpha/(gamma+alpha) # taux de létalité (infection fatality ratio)
 </code></pre>
 <p>On affiche le taux de létalité (IFR) brut :</p>
-<pre><code>plot(temps3, IFR, type ="l", xlab="Date (Annee 2020)", ylab="IFR")
+<pre><code class="language-R">plot(temps3, IFR, type =&quot;l&quot;, xlab=&quot;Date (Annee 2020)&quot;, ylab=&quot;IFR&quot;)
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-34-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot12.svg" /></p>
 <p>On réalise une moyenne de l’IFR sur les valeurs non nulles :</p>
 <pre><code class="language-R">w=which(IFR!=0)
 print(mean(IFR[w]))
 </code></pre>
 <p>On obtient un IFR de 0.67%. Cette valeur est comparable à celles estimées par <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>. </p>
 <p>On lisse la sortie en faisant une moyenne mobile sur 5 jours :</p>
-<pre><code class="language-R">IFRlisse &lt;- rollmean(IFR, k=5)
+<pre><code class="language-R">IFRlisse &lt;- rollmean(IFR, k=5, fill=NA) #fill=NA remplit les valeurs manquantes en raison de la fonction rollmean par des NA
 
-plot(t[1:length(IFRlisse)], IFRlisse, type =&quot;l&quot;, xlab=&quot;Nombre de jours (du 1er janvier 2020 au 12 mars 2020)&quot;, ylab=&quot;IFR&quot;,ylim=c(0,0.01))
-points(t, IFR)
-title(&quot;Evolution de l'IFR (ratio de letalite) lors de la premiere flambee&quot;)
+plot(temps3, IFRlisse, type =&quot;l&quot;, xlab=&quot;Date (Année 2020)&quot;, ylab=&quot;IFR&quot;,ylim=c(0,0.01))
+points(temps3, IFR )
+title(&quot;Evolution de l'IFR (ratio de létalité) lors de la première flambée&quot;)
+legend(&quot;topleft&quot;,c(&quot;D'après l'IFR brut (points)&quot;,&quot;D'après IFR lissé (courbe)&quot;))
 </code></pre>
-<p><img alt="" src="../figsTD2/unnamed-chunk-35-1.png" /></p>
+<p><img alt="" src="../figsTD2/plot13.svg" /></p>
 <p>Nous obtenons des valeurs d’IFR du même ordre de grandeur (0.8%) et de tendance comparable à l'article de <a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques et al 2020</a>.</p></div>
             </div>
         </div>
