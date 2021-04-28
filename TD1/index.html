@@ -45,6 +45,9 @@
                             <li class="navitem">
                                 <a href="../TD3/" class="nav-link">TD3</a>
                             </li>
+                            <li class="navitem">
+                                <a href="../TD4/" class="nav-link">TD4</a>
+                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav ml-auto">
@@ -277,17 +280,17 @@ print(q)
 <p>On trouve <script type="math/tex">r \approx 0.17</script> et <script type="math/tex">q \approx 4.11</script>.</p>
 <h3 id="methode-du-maximum-de-vraisemblance">Méthode du maximum de vraisemblance</h3>
 <p>Une méthode alternative consiste à maximiser la probabilité des observations sachant les paramètres. C'est ce qu'on appelle la vraisemblance (<em>likelihood</em> en anglais). </p>
-<p>Nous faisons l'hypothèse que le nombre de décès cumulés observé au jour <script type="math/tex">t</script> est tiré dans une loi de Poisson de moyenne <script type="math/tex">D(t)</script> tel que donné par le modèle :
+<p>Nous faisons l'hypothèse que le nombre de décès cumulés observé au jour <script type="math/tex">t</script> est tiré dans une loi de Poisson de moyenne <script type="math/tex">D(t)</script> telle que donné par le modèle :
 <script type="math/tex; mode=display">
 D_{\small\mbox{data}}(t)\sim \mbox{Poisson}\left(D_{\small\mbox{model}}(t)\right)
 </script>
 En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance s'écrit :
 <script type="math/tex; mode=display">
-\mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observer }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\,.
+\mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\,.
 </script>
 Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
 <script type="math/tex; mode=display">
-\mbox{logLike}(\theta)=\log(\mbox{Like}(\theta))=\sum_{t=0}^T \log\left (\mbox{Prob}(\mbox{observer }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\right )\,.
+\mbox{logLike}(\theta)=\log(\mbox{Like}(\theta))=\sum_{t=0}^T \log\left (\mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\right )\,.
 </script>
 Créons une fonction qui prend en entrée les paramètres à optimiser et renvoie en sortie la quantité à minimiser (-logLike) :</p>
 <pre><code class="language-R">LL_Covid=function(theta){ #Log-likelihood

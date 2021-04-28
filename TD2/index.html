@@ -45,6 +45,9 @@
                             <li class="navitem">
                                 <a href="../TD3/" class="nav-link">TD3</a>
                             </li>
+                            <li class="navitem">
+                                <a href="../TD4/" class="nav-link">TD4</a>
+                            </li>
                         </ul>
 
                     <ul class="nav navbar-nav ml-auto">
@@ -160,6 +163,23 @@ Elle sera ajustée aux données de tests. La seconde partie du modèle sera ajus
 \end{eqnarray}
 </script>
 </p>
+<p>L'ajustement du modèle se fera par maximisation de la vraisemblance (<em>likelihood</em> en anglais). Cette méthode consiste à maximiser la probabilité des observations sachant les paramètres. Le modèle d'observation définit la probabilité qu'un test soit positif au temps <script type="math/tex">t​</script> d'après le modèle épidémiologique :
+<script type="math/tex; mode=display">
+p(t)=\frac{\sigma I(t)}{I(t)+\kappa S(t)}\,,
+</script>
+où <script type="math/tex"> \sigma ​</script> est la sensibilité des tests PCR (supposée connue) et <script type="math/tex">\kappa</script> est probabilité relative pour les individus sensibles de se faire tester comparativement aux infectés (à estimer). Aussi, le nombre de tests positifs le jour <script type="math/tex">t</script> peut être modélisé comme un tirage dans une loi Binomiale de paramètres <script type="math/tex">p(t)</script> et <script type="math/tex"> n(t) </script> (le nombre de tests réalisés le jour <script type="math/tex"> t </script>) : le nombre de nouveaux cas observés le jour <script type="math/tex">t</script> est
+<script type="math/tex; mode=display">
+c(t)\sim \mbox{Binomial}(n(t),p(t))
+</script>
+En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance s'écrit :
+<script type="math/tex; mode=display">
+\mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\,.
+</script>
+Soit <script type="math/tex"> \theta = \{ \beta, \kappa \} </script> le vecteur des paramètres à estimer. Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
+<script type="math/tex; mode=display">
+\mbox{logLike}(\theta)=\log(\mbox{Like}(\theta))=\sum_{t=0}^T \log\left (\mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts } p(t) )\right)\,.
+</script>
+Nous travaillerons avec la log-vraisemblance.</p>
 <h2 id="traitement-des-donnees">Traitement des données</h2>
 <p>Commençons par nettoyer l'environnement de travail :</p>
 <pre><code class="language-R">rm(list=ls())  # Efface les variables créées lors des exécutions précédentes
@@ -256,7 +276,8 @@ R_0=3; # Reproductivite de la maladie
 beta=gamma*R_0; # R0=beta/alpha (estimation initiale à optimiser)
 
 sigma=0.7;# Sensibilite des tests PCR
-kappa=5e-3# Probabilité relative pour les sensibles de se faire tester comparativement aux infectés (estimation initiale à optimiser)
+# Probabilité relative pour les sensibles de se faire tester comparativement aux infectés
+kappa=5e-3# (estimation initiale à optimiser)
 </code></pre>
 <p>Les conditions initiales du modèle sont :</p>
 <pre><code class="language-R">I0=1; # On part d'un individu infecté. Ceci est fixé pour la premiere flambée.
