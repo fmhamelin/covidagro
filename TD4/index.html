@@ -116,6 +116,7 @@
 <h1 id="introduction-a-la-modelisation-en-epidemiologie-covid19-1er-confinement-estimation-de-la-reproductivite-du-virus">Introduction à la modélisation en épidémiologie : COVID19 - 1er confinement - estimation de la reproductivité du virus</h1>
 <p>Cécile Berthelot, Alizée Delarue, Aglaé Thieffry, Amélie Picchiottino (M1 Agro Rennes), le 15/03/2021.</p>
 <p>Edité par Frédéric Hamelin et Marine Dorand (M1 MODE), le 28/04/2021.</p>
+<hr />
 <h2 id="introduction">Introduction</h2>
 <p>Nous nous sommes intéressées au cours de ce projet à la modélisation de l'épidémie de Covid-19 lors du premier confinement, à partir du 19 mars (par manque de données les jours précédents).</p>
 <p>Pour cela, nous avons récolté des bases de données sur <a href="https://www.data.gouv.fr/fr/">data.gouv.fr</a>. Nous avons utilisé des données portant sur le nombre de tests réalisés en laboratoire de ville, le nombre de tests positifs, le nombre de décès à l'hôpital, le nombre de guérisons après hospitalisation. Nous n’avons pas utilisé de données sur les guérisons et les décès à domicile. Les données sont cumulées à partir du 19 mars.</p>
@@ -397,7 +398,7 @@ legend(x=21, y=0.30,legend=&quot;Proportion de tests positifs théorique&quot;,l
 <p><img alt="" src="../figsTD4/unnamed-chunk-29-2.png" /></p>
 <pre><code class="language-R">plot(t,N-X[,2],xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,ylab=&quot;Nombre de personnes ayant été infectées&quot;,pch=16, main=&quot;Evolution du nombre théorique de personnes ayant été infectées&quot;)
 </code></pre>
-<p><img alt="" src="TD4_files/figure-markdown_strict/unnamed-chunk-29-3.png" /></p>
+<p><img alt="" src="../figsTD4/unnamed-chunk-29-3.png" /></p>
 <p>Nous représentons les évolutions du nombre de décès cumulés théoriques (courbe noire) et observées (courbe rouge).</p>
 <pre><code class="language-R">plot(temps,DN,col=&quot;red&quot;,xlab=&quot;Temps écoulé depuis le 1er avril (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,pch=16,main=&quot;Evolutions du nombre de décès cumulés théoriques et observées&quot;)
 lines(t,X[,4])
