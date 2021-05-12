@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>TD4 - COVIDAGRO</title>
+        <title>TD4 (Avr-Mai) - COVIDAGRO</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -37,16 +37,19 @@
                                 <a href=".." class="nav-link">Bienvenue</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD1/" class="nav-link">TD1</a>
+                                <a href="../TD1/" class="nav-link">TD1 (Mar)</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD2/" class="nav-link">TD2</a>
+                                <a href="../TD2/" class="nav-link">TD2 (Jan-Mar)</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD3/" class="nav-link">TD3</a>
+                                <a href="../TD3/" class="nav-link">TD3 (Avr-Mai)</a>
                             </li>
                             <li class="navitem active">
-                                <a href="./" class="nav-link">TD4</a>
+                                <a href="./" class="nav-link">TD4 (Avr-Mai)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD5/" class="nav-link">TD5 (Sep-Oct)</a>
                             </li>
                         </ul>
 
@@ -62,7 +65,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" class="nav-link disabled">
+                                <a rel="next" href="../TD5/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -174,7 +177,7 @@ En admettant que les observations sont indépendantes conditionnellement au mod�
 <script type="math/tex; mode=display">
 \mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\times \mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\,.
 </script>
-Soit <script type="math/tex"> \theta = \{ \beta, \kappa \} </script> le vecteur des paramètres à estimer. Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
+Soit <script type="math/tex"> \theta = \{ \beta, \kappa, \alpha \} </script> le vecteur des paramètres à estimer. Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
 <script type="math/tex; mode=display">
 \mbox{logLike}(\theta)=\sum_{t=0}^T \log\left(\mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\times \mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\right)\,.
 </script>
@@ -427,7 +430,7 @@ print(paste(&quot;R_e=&quot;,R_e))
 <p>Nous pouvons également estimer le taux de létalité (IFR) du virus durant le 1er confinement :</p>
 <pre><code class="language-R">IFR = alpha/(alpha+gamma) # Infection Fatality Ratio
 
-print(paste(&quot;IFR=&quot;,Re))
+print(paste(&quot;IFR=&quot;,IFR))
 </code></pre>
 <p><strong>Nous trouvons un IFR de 0.58%</strong>, ce qui est comparable avec la valeur obtenue lors de la première flambée, voir par exemple le précédent article des mêmes auteurs :</p>
 <p><em><a href="https://www.mdpi.com/2079-7737/9/5/97/htm">Roques, L., Klein, E. K., Papaix, J., Sar, A., &amp; Soubeyrand, S.  (2020). Using early data to estimate the actual infection fatality ratio from COVID-19 in France. Biology, 9(5), 97.</a></em></p></div>
