@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>TD2 (Jan-Mar) - COVIDAGRO</title>
+        <title>TD2 (Janvier-Mars 2020) - COVIDAGRO</title>
         <link href="../css/bootstrap.min.css" rel="stylesheet">
         <link href="../css/font-awesome.min.css" rel="stylesheet">
         <link href="../css/base.css" rel="stylesheet">
@@ -37,19 +37,22 @@
                                 <a href=".." class="nav-link">Bienvenue</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD1/" class="nav-link">TD1 (Mar)</a>
+                                <a href="../TD1/" class="nav-link">TD1 (Mars 2020)</a>
                             </li>
                             <li class="navitem active">
-                                <a href="./" class="nav-link">TD2 (Jan-Mar)</a>
+                                <a href="./" class="nav-link">TD2 (Janvier-Mars 2020)</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD3/" class="nav-link">TD3 (Avr-Mai)</a>
+                                <a href="../TD3/" class="nav-link">TD3 (Avril-Mai 2020)</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD4/" class="nav-link">TD4 (Avr-Mai)</a>
+                                <a href="../TD4/" class="nav-link">TD4 (Avril-Mai 2020)</a>
                             </li>
                             <li class="navitem">
-                                <a href="../TD5/" class="nav-link">TD5 (Sep-Oct)</a>
+                                <a href="../TD5/" class="nav-link">TD5 (Septembre-Octobre 2020)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD6/" class="nav-link">TD6 (Novembre-Décembre 2020)</a>
                             </li>
                         </ul>
 
@@ -113,8 +116,8 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="introduction-a-la-modelisation-en-epidemiologie-covid-19-1ere-flambee-estimation-du-taux-de-letalite">Introduction à la modélisation en épidémiologie : COVID-19 - 1ère flambée - estimation du taux de létalité</h1>
-<p>Marie Joigneau, Sabine Lobligeois, Louise Belamy, Maimouna Diarra (M1 Agro Rennes), le 14/03/2021.</p>
-<p>Edité par Frédéric Hamelin et Marine Dorand (M1 MODE), le 23/04/2021.</p>
+<p>Marie Joigneau, Sabine Lobligeois, Louise Belamy, Maimouna Diarra (M1 Agro Rennes), le 14 mars 2021.</p>
+<p>Edité par Frédéric Hamelin et Marine Dorand (M1 MODE), le 23 avril 2021.</p>
 <hr />
 <p>On se base sur l’étude de l’article suivant : <a href="https://www.mdpi.com/2079-7737/9/5/97">Roques et al. (2020) Using Early Data to Estimate the Actual Infection Fatality Ratio from COVID-19 in France</a>. Le but de notre étude est de reproduire les résultats de l’article avec les données de morts actualisées et publiées par <a href="https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/#_">Santé Publique France</a>.</p>
 <h2 id="modele-epidemiologique">Modèle épidémiologique</h2>
@@ -166,7 +169,8 @@ Elle sera ajustée aux données de tests. La seconde partie du modèle sera ajus
 \end{eqnarray}
 </script>
 </p>
-<p>L'ajustement du modèle se fera par maximisation de la vraisemblance (<em>likelihood</em> en anglais). Cette méthode consiste à maximiser la probabilité des observations sachant les paramètres. Le modèle d'observation définit la probabilité qu'un test soit positif au temps <script type="math/tex">t​</script> d'après le modèle épidémiologique :
+<h3 id="modele-dobservation">Modèle d'observation</h3>
+<p>L'ajustement du modèle se fera par maximisation de la vraisemblance. Cette méthode consiste à maximiser la probabilité des observations sachant les paramètres. Le modèle d'observation définit la probabilité qu'un test soit positif au temps <script type="math/tex">t​</script> d'après le modèle épidémiologique :
 <script type="math/tex; mode=display">
 p(t)=\frac{\sigma I(t)}{I(t)+\kappa S(t)}\,,
 </script>
@@ -174,7 +178,7 @@ où <script type="math/tex"> \sigma ​</script> est la sensibilité des tests P
 <script type="math/tex; mode=display">
 c(t)\sim \mbox{Binomial}(n(t),p(t))
 </script>
-En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance s'écrit :
+En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance (<em>likelihood</em> en anglais) s'écrit :
 <script type="math/tex; mode=display">
 \mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\,.
 </script>
