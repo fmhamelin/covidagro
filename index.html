@@ -8,7 +8,7 @@
         
         
         <link rel="shortcut icon" href="img/favicon.ico">
-        <title>COVIDAGRO</title>
+        <title>Frédéric Hamelin</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="css/base.css" rel="stylesheet">
@@ -23,7 +23,7 @@
     <body class="homepage">
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">COVIDAGRO</a>
+                <a class="navbar-brand" href=".">Frédéric Hamelin</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -34,25 +34,16 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="navitem active">
-                                <a href="." class="nav-link">Bienvenue</a>
+                                <a href="." class="nav-link">Welcome</a>
                             </li>
                             <li class="navitem">
-                                <a href="TD1/" class="nav-link">TD1 (Mars 2020)</a>
+                                <a href="news/" class="nav-link">News</a>
                             </li>
                             <li class="navitem">
-                                <a href="TD2/" class="nav-link">TD2 (Janvier-Mars 2020)</a>
+                                <a href="publications/" class="nav-link">Publications</a>
                             </li>
                             <li class="navitem">
-                                <a href="TD3/" class="nav-link">TD3 (Avril-Mai 2020)</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="TD4/" class="nav-link">TD4 (Avril-Mai 2020)</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="TD5/" class="nav-link">TD5 (Septembre-Octobre 2020)</a>
-                            </li>
-                            <li class="navitem">
-                                <a href="TD6/" class="nav-link">TD6 (Novembre-Décembre 2020)</a>
+                                <a href="teaching/" class="nav-link">Teaching</a>
                             </li>
                         </ul>
 
@@ -68,7 +59,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a rel="next" href="TD1/" class="nav-link">
+                                <a rel="next" href="news/" class="nav-link">
                                     Next <i class="fa fa-arrow-right"></i>
                                 </a>
                             </li>
@@ -90,16 +81,13 @@
     <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
         <ul class="nav flex-column">
             
-            <li class="nav-item" data-level="1"><a href="#bienvenue" class="nav-link">Bienvenue !</a>
-              <ul class="nav flex-column">
-            <li class="nav-item" data-level="2"><a href="#travaux-diriges-en-ligne" class="nav-link">Travaux dirigés en ligne</a>
+            <li class="nav-item" data-level="1"><a href="#short-bio" class="nav-link">Short bio</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-level="2"><a href="#applications-interactives" class="nav-link">Applications interactives</a>
+            
+            <li class="nav-item" data-level="1"><a href="#contact" class="nav-link">Contact</a>
               <ul class="nav flex-column">
-              </ul>
-            </li>
               </ul>
             </li>
         </ul>
@@ -107,41 +95,20 @@
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h1 id="bienvenue">Bienvenue !</h1>
-<p>Ce site rassemble des ressources pédagogiques liées à la modélisation de l'épidémie de COVID-19 en France, réalisées par et pour les élèves ingénieurs agronomes de <a href="https://www.institut-agro.fr/fr">L'institut Agro</a> de Rennes, non sans apports des étudiants du <a href="https://osur.univ-rennes1.fr/mode/">Master MODE</a> (Modélisation en écologie), qui est également une Spécialisation du cursus ingénieur. </p>
-<p><strong>Il s'agit d'exercices à visée strictement pédagogique.</strong> La critique des modèles fait partie de l'exercice. Les données proviennent de <a href="https://www.data.gouv.fr/fr/pages/donnees-coronavirus">data.gouv.fr</a>. Commentaires bienvenus : merci d'écrire à <a href="https://fmhamelin.github.io/welcome/">Frédéric Hamelin</a> (frederic.hamelin@agrocampus-ouest.fr). Dernière mise à jour : le 20/05/2021.</p>
-<h2 id="travaux-diriges-en-ligne">Travaux dirigés en ligne</h2>
-<p>Les TD sont proposés en langage <a href="https://www.r-project.org/">R</a>.</p>
-<h3 id="introduction-a-la-modelisation-en-epidemiologie-covid-19">Introduction à la modélisation en épidémiologie : COVID-19</h3>
-<h4 id="1ere-flambee">1ère flambée</h4>
-<ul>
-<li><a href="https://fmhamelin.github.io/covidagro/TD1/">TD1</a> : croissance exponentielle des décès </li>
-<li><a href="https://fmhamelin.github.io/covidagro/TD2/">TD2</a> : estimation du taux de létalité sur la base des données de tests et de décès</li>
-</ul>
-<h4 id="1er-confinement">1er confinement</h4>
-<ul>
-<li><a href="https://fmhamelin.github.io/covidagro/TD3/">TD3</a> : dynamique épidémique sur la base des données d'hospitalisations</li>
-<li><a href="https://fmhamelin.github.io/covidagro/TD4/">TD4</a> : dynamique épidémique sur la base des données de tests et de décès</li>
-</ul>
-<h4 id="2eme-flambee">2ème flambée</h4>
-<ul>
-<li><a href="https://fmhamelin.github.io/covidagro/TD5/">TD5</a> : dynamique épidémique sur la base des données de tests et de décès</li>
-<li>L'appli <a href="https://demecology.shinyapps.io/Covid-19/">COVID-19</a> présente un ajustement sur la base des données d'hospitalisations</li>
-</ul>
-<h4 id="2eme-confinement">2ème confinement</h4>
-<ul>
-<li><a href="https://fmhamelin.github.io/covidagro/TD6/">TD6</a> : dynamique épidémique sur la base des données de tests, de décès, et d'hospitalisations</li>
-</ul>
-<h2 id="applications-interactives">Applications interactives</h2>
-<p>Les applis sont réalisées avec <a href="https://shiny.rstudio.com/">Shiny</a>. </p>
-<h3 id="covid-19"><a href="https://demecology.shinyapps.io/Covid-19/">COVID-19</a></h3>
-<p>Cette <a href="https://demecology.shinyapps.io/Covid-19/">appli</a> permet de visualiser l'évolution des hospitalisations et des admissions des malades, d'ajuster un modèle simple (cf. section "<em>information on the model</em>", onglet "model") et de réaliser des projections. </p>
-<p>Dans la section "<em>information on the model</em>", l'onglet "<em>Fitting example</em>" donne un exemple d'ajustement de la dynamique épidémique durant la <strong>2ème flambée</strong>, sur la base des données d'hospitalisations.</p>
-<p>Appli réalisée par Maimouna Diarra (élève ingénieure agronome) dans le cadre d'un stage de S7 en décembre 2020/janvier 2021.</p>
-<h3 id="covidcontact"><a href="https://demecology.shinyapps.io/covidcontact/">CovidContact</a></h3>
-<p>Cette <a href="https://demecology.shinyapps.io/covidcontact/">appli</a> propose un modèle structuré en âge pour modéliser la dynamique pendant et après le 1er confinement, et tester des scénarios de déconfinement. Le modèle est présenté sur la page suivante : <a href="https://fmhamelin.github.io/projetsCovid/projetMEPI2020.html">Transmission du coronavirus confinement/post-confinement et impact des mesures de distanciation sociale</a>. </p>
-<p>Un exemple de sorties est proposé dans la section "Ajustement du modèle" puis "Représentations graphiques".</p>
-<p>Appli créée par Nathéo Beauchamp et Loïc Lehnhoff (élèves ingénieurs agronome) dans le cadre de l'UE Modélisation en épidémiologie du M2 MODE en novembre 2020.</p></div>
+<p><img src=".\images\sku.jpg" /> Hi! Welcome on my personal webpage. </p>
+<p>My name is Frédéric Hamelin and I am Associate Professor at <a href="https://www.institut-agro.fr/fr"><em>L'institut Agro</em></a> in Rennes, France. </p>
+<p>I work at the interface between Mathematical Ecology and Plant Disease Epidemiology.</p>
+<p>I am a member of the <a href="https://www6.rennes.inrae.fr/igepp_eng/Research-teams/Demecology">Demecology</a> (Dynamics, Evolution, Modelling, Ecology) research group of the Institute of Genetics, Environment and Plant Protection (<a href="https://www6.rennes.inrae.fr/igepp_eng/">IGEPP</a>).</p>
+<h1 id="short-bio">Short bio</h1>
+<p>I was first trained as a telecommunications engineer in Brest, Brittany, France. </p>
+<p>In 2007, I received a PhD in automatic control from the University of Nice, France (supervisors: <a href="http://www-sop.inria.fr/members/Pierre.Bernhard/index_en.shtml">Pierre Bernhard</a> and <a href="http://www2.sophia.inra.fr/perso/wajnberg/index.htm">Eric Wajnberg</a>). During my doctoral thesis and then as a postdoctoral researcher at the University of Alberta, Canada (with <a href="http://grad.biology.ualberta.ca/mlewis/mark-lewis-2/">Mark A. Lewis</a>), I explored differential games and their applications to behavioral ecology. </p>
+<p>Back to Brittany, I joined <em>L'institut Agro</em> in 2008 as faculty member in the department of ecology in Rennes.</p>
+<p>In 2017, I obtained my <em>Habilitation</em> in ecology and evolution from the University of Rennes.</p>
+<h1 id="contact">Contact</h1>
+<p>Email: frederic.hamelin@agrocampus-ouest.fr</p>
+<p>Postal address: L'institut Agro, Ecologie et Santé des Plantes, 65 rue de Saint Brieuc, 35042 Rennes, France.</p>
+<hr />
+<p>Last update on May 20, 2021.</p></div>
             </div>
         </div>
 
@@ -226,5 +193,5 @@
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-05-20 19:30:19.202103+00:00
+Build Date UTC : 2021-05-20 21:14:29.832284+00:00
 -->
