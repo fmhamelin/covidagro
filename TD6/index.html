@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>TD6 (Novembre-Décembre 2020) - COVIDAGRO</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">COVIDAGRO</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Bienvenue</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD1/" class="nav-link">TD1 (Mars 2020)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD2/" class="nav-link">TD2 (Janvier-Mars 2020)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD3/" class="nav-link">TD3 (Avril-Mai 2020)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD4/" class="nav-link">TD4 (Avril-Mai 2020)</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../TD5/" class="nav-link">TD5 (Septembre-Octobre 2020)</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">TD6 (Novembre-Décembre 2020)</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../TD5/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#introduction-a-la-modelisation-en-epidemiologie-covid-19-2eme-confinement" class="nav-link">Introduction à la modélisation en épidémiologie : COVID-19 - 2ème confinement</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#dynamique-epidemique-sur-la-base-des-donnees-de-tests" class="nav-link">Dynamique épidémique sur la base des données de tests</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#dynamique-epidemique-sur-la-base-des-donnees-dhospitalisations" class="nav-link">Dynamique épidémique sur la base des données d'hospitalisations</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="introduction-a-la-modelisation-en-epidemiologie-covid-19-2eme-confinement">Introduction à la modélisation en épidémiologie : COVID-19 - 2ème confinement</h1>
+<p>Victoria Bancel, Elise Hodbert, Nolwenn Paquet (M1 Agro Rennes), le 11 mars 2021.</p>
+<p>Edité par Frédéric Hamelin et Marine Dorand (M1 MODE), le 20 mai 2021.</p>
+<hr />
+<h2 id="dynamique-epidemique-sur-la-base-des-donnees-de-tests">Dynamique épidémique sur la base des données de tests</h2>
+<h3 id="modele-epidemiologique">Modèle épidémiologique</h3>
+<p>Dans ce TD, nous allons modéliser la dynamique l'épidémie de COVID19 en France sur la base des données de tests dans un premier temps. Les données concernant les décès seront utilisées dans un second temps pour estimer le taux de létalité de la maladie à la fin de l'année 2020 en France.</p>
+<p>Les variables du modèle sont : </p>
+<ul>
+<li>
+<script type="math/tex"> S(t) </script> : le nombre de personnes sensibles au temps <script type="math/tex"> t </script>, </li>
+<li>
+<script type="math/tex"> I(t) </script> : le nombre de personnes infectées et infectieuses, </li>
+<li>
+<script type="math/tex"> R(t) </script> : le nombre de personnes rétablies ou guéries,</li>
+<li>
+<script type="math/tex"> D(t) </script> : le nombre de personnes décédées. </li>
+</ul>
+<p>La taille de la population est <script type="math/tex">N=S+I+R</script>. </p>
+<p>Les paramètres du modèles sont </p>
+<ul>
+<li>
+<script type="math/tex"> \beta </script> : le taux de transmission de la maladie, </li>
+<li>
+<script type="math/tex"> \gamma </script> : le taux de guérison,</li>
+<li>
+<script type="math/tex"> \alpha </script> : le taux de mortalité due à la maladie.</li>
+</ul>
+<p>Ce sont des "taux" par unité de temps. </p>
+<p><img alt="plot0" src="../figsTD6/plotSIRD.svg" /></p>
+<p>Le modèle SIRD s'écrit :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}S}{\mathrm{d}t}&=&-\beta \frac{I}{N}S\,,\\
+\frac{\mathrm{d}I}{\mathrm{d}t}&=&\beta \frac{I}{N}S - (\alpha+\gamma)I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,,\\
+\frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
+\end{eqnarray}
+</script>
+Pour simplifier l'étude, nous faisons l'hypothèse que le taux de mortalité due à la maladie est très faible et négligeable d'un point de vue épidémiologique devant le taux de guérison <script type="math/tex">(\alpha\ll \gamma)</script>. Cela permet d'approximer la dynamique épidémique de façon indépendante des décès :
+<script type="math/tex; mode=display">
+\begin{eqnarray}
+\frac{\mathrm{d}S}{\mathrm{d}t}&=&-\beta \frac{I}{N}S\,,\\
+\frac{\mathrm{d}I}{\mathrm{d}t}&\approx&\beta \frac{I}{N}S -\gamma I\,,\\
+\frac{\mathrm{d}R}{\mathrm{d}t}&=&\gamma I\,.
+\end{eqnarray}
+</script>
+Le modèle ci-dessus est le célèbre modèle SIR :</p>
+<p><img alt="plot0" src="../figsTD6/plotSIR.svg" /></p>
+<p>Nous ajusterons le modèle SIR aux données de tests. Dans un second temps, nous ajusterons le modèle SIRD aux données de tests et de décès.</p>
+<h3 id="modele-dobservation">Modèle d'observation</h3>
+<p>L'ajustement du modèle se fera par maximisation de la vraisemblance. Cette méthode consiste à maximiser la probabilité des observations sachant les paramètres. Le modèle d'observation définit la probabilité qu'un test soit positif au temps <script type="math/tex">t​</script> d'après le modèle épidémiologique :
+<script type="math/tex; mode=display">
+p(t)=\frac{\sigma I(t)}{I(t)+\kappa S(t)}\,,
+</script>
+où <script type="math/tex"> \sigma ​</script> est la sensibilité des tests PCR (supposée connue) et <script type="math/tex">\kappa</script> est probabilité relative pour les individus sensibles de se faire tester comparativement aux infectés (à estimer). Aussi, le nombre de tests positifs le jour <script type="math/tex">t</script> peut être modélisé comme un tirage dans une loi Binomiale de paramètres <script type="math/tex">p(t)</script> et <script type="math/tex"> n(t) </script> (le nombre de tests réalisés le jour <script type="math/tex"> t </script>) : le nombre de nouveaux cas observés le jour <script type="math/tex">t</script> est
+<script type="math/tex; mode=display">
+c(t)\sim \mbox{Binomial}(n(t),p(t))
+</script>
+Nous faisons l'hypothèse que le nombre de décès cumulés observé au jour <script type="math/tex">t</script> est tiré dans une loi de Poisson de moyenne <script type="math/tex">D(t)</script> telle que donné par le modèle :
+<script type="math/tex; mode=display">
+D_{\small\mbox{data}}(t)\sim \mbox{Poisson}\left(D_{\small\mbox{model}}(t)\right)
+</script>
+En admettant que les observations sont indépendantes conditionnellement au modèle, la vraisemblance (<em>likelihood</em> en anglais) s'écrit :
+<script type="math/tex; mode=display">
+\mbox{Like}(\theta)=\prod_{t=0}^{T} \mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\times \mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\,.
+</script>
+Soit <script type="math/tex"> \theta = \{ \beta, \kappa, \alpha \} </script> le vecteur des paramètres à estimer. Rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la vraisemblance est équivalent à rechercher les valeurs de <script type="math/tex">\theta</script> qui maximisent la log-vraisemblance, qui transforme le produit en somme :
+<script type="math/tex; mode=display">
+\mbox{logLike}(\theta)=\sum_{t=0}^T \log\left(\mbox{Prob}(\mbox{observe }c(t)|\mbox{ model predicts }p(t))\times \mbox{Prob}(\mbox{observe }D_{\small\mbox{data}}(t)|D_{\small\mbox{model}}(t))\right)\,.
+</script>
+Nous travaillerons avec la log-vraisemblance.</p>
+<h3 id="traitement-des-donnees">Traitement des données</h3>
+<p>Importation du package nécessaire au programme :</p>
+<pre><code class="language-R"># Importe la fonction ode qui permet de résoudre une équation différentielle
+library(deSolve)
+library(dplyr)
+</code></pre>
+<p>Mise au propre de l’espace de travail :</p>
+<pre><code class="language-R">rm(list=ls()) # Efface les variables créées lors des exécutions précédentes
+graphics.off() # Ferme les fenêtres ouvertes lors des exécutions précédentes
+</code></pre>
+<p>Importation du jeu de données sur les tests :</p>
+<pre><code class="language-R"># Lien permanent vers les données de tests
+urltest = url(&quot;https://www.data.gouv.fr/fr/datasets/r/dd0de5d9-b5a5-4503-930a-7b08dc0adc7c&quot;)
+
+#Tableau lié aux données de tests
+data1 = read.csv2(urltest, header=TRUE, sep=&quot;;&quot;)
+
+#On selectionne les colonnes jour, Tests positifs, tests, et classe d'age 
+data&lt;-data1 %&gt;% 
+  select(jour,P,T,cl_age90) %&gt;% 
+  filter(cl_age90==&quot;0&quot;) %&gt;% #Pour les données liées aux tests, on gardera les données pour toutes les classes d'âges. On conserve seulement les lignes avec clage_covid=0
+  filter(jour&gt;= &quot;2020-10-30&quot;,jour&lt;= &quot;2020-12-15&quot;  ) #sélection des dates du 2ème confinement 
+</code></pre>
+<p>Construction des vecteurs des données cumulées :</p>
+<pre><code class="language-R">pt=as.integer(as.character(data[,2])) # Vecteur concernant les tests positifs quotidiens
+tt=as.integer(as.character(data[,3])) # Vecteur concernant les tests réalisés quotidiens
+
+PT = cumsum(pt) # Tests positifs cumulés
+TT = cumsum (tt) # Tests réalisés cumulés
+</code></pre>
+<p>Définition de la longueur de notre série de données, c’est-à-dire du nombre de jours d’épidémie étudiés :</p>
+<pre><code class="language-R">LP = length(PT); LT = length(TT); lt = length(tt); lp = length(pt)
+</code></pre>
+<p>Visualisation des données cumulées à partir du 30 octobre 2020 :</p>
+<pre><code class="language-R">plot(1:LT,TT,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Nombre de tests cumulés&quot;,col=&quot;black&quot;, sub = &quot;Noir : nombre total de tests. Mauve : nombre de tests positifs.&quot;)
+points(1:LP,PT,col=&quot;purple&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-6-1.png" /></p>
+<p>Visualisation des données journalières à partir du 30 octobre 2020 :</p>
+<pre><code class="language-R">plot(1:lt,tt,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Nombre de tests quotidiens&quot;,col=&quot;black&quot;, sub = &quot;Noir : nombre total de tests quotidiens. Mauve : nombre de tests positifs.&quot;)
+points(1:lp,pt,col=&quot;purple&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-8-1.png" /></p>
+<p>Proportion de tests positifs :</p>
+<pre><code class="language-R">pp = pt/tt # Proportion de tests positifs journaliers
+plot(1:lp,pp,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Proportion de tests quotidiens positifs&quot;,col=&quot;purple&quot;, type = &quot;l&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-9-1.png" /></p>
+<h3 id="ajustement-du-modele-aux-donnees">Ajustement du modèle aux données</h3>
+<p>Initialisation des paramètres du modèle :</p>
+<pre><code class="language-R">N = 64e6 # Taille totale de la population
+gamma = 1/10 # Taux de guérison par jour, correspond à l'inverse de la période infectieuse (alpha = 1/ periode infectieuse = 1 / 10)
+R_0 = 1 # Reproductivité du virus
+beta = gamma*R_0 # R0 = beta/alpha (nombre d'infections secondaires suite à l'introduction d'un individu infecté au sein d'une population naïve)
+
+sigma = 0.7 # Sensibilité des tests PCR
+kappa = 5e-3 # Biais d'observation
+</code></pre>
+<p>Conditions initiales (en <script type="math/tex"> t=t_0 </script>) :</p>
+<pre><code class="language-R">t0 = 1 # Début du modèle qui correspond au début du second confinement
+
+P0 = c(beta,kappa) # Vecteur des paramètres à estimer
+
+I0 = 1e6 # Nombre d'infectés au 30 octobre (estimation grossière basée sur le fait qu'environ 300000 personnes ont été testées positives du 23 au 30 octobre)
+
+R0 = (10/100)*N # Nombre de personnes immunisées au 30 octobre (estimation grossière) 
+S0 = N-I0-R0 # Nombre de personnes sensibles au COVID-19, c'est-à-dire qui n'ont pas encore été contaminées
+X0 = c(S0,I0) # Vecteur d'état, on ne prend que S et I car on peut retrouver facilement R avec ces deux valeurs (R=N-S-I)
+</code></pre>
+<p>Modèle SIR :</p>
+<pre><code class="language-R">t=t0:lt # Vecteur temps
+
+SIR = function(t, X, P){
+
+  beta = P[1]
+  S = X[1]
+  I = X[2]
+
+  y = beta*S*I/N # Nombre de nouvelles infections par jour
+  dS = -y
+  dI = +y - gamma*I
+
+  dX=c(dS,dI)
+  return(list(dX))
+}
+</code></pre>
+<p>Fonction qui calcule la vraisemblance des paramètres :</p>
+<pre><code class="language-R">logLike=function(theta){
+  P=theta[1:2]
+
+  beta=P[1]
+  kappa=P[2]
+
+  X=ode(X0,t,SIR,beta)
+
+  p=sigma*X[,3]/(X[,3]+kappa*X[,2]) # Proportion théorique de tests quotidiens positifs
+
+  L=dbinom(pt, tt, p, log=TRUE) # Probabilité d'observer &quot;pt&quot; positifs sachant le nombre de tests &quot;tt&quot; et &quot;p(t)&quot; telle que donnée par le modèle (loi binomiale)
+
+  LL=sum(L) # Log transforme produit des probas en somme
+
+  return(LL)
+}
+</code></pre>
+<p>Estimation des paramètres :</p>
+<pre><code class="language-R">theta0 = P0 # estimation initiale
+
+opt=optim(theta0,logLike,control=list(fnscale=-1))
+
+beta=opt$par[1]
+kappa=opt$par[2]
+
+t=t0:lt
+
+X=ode(X0,t,SIR,beta)
+
+p=sigma*X[,3]/(X[,3]+kappa*X[,2])# Proportion théorique de tests quotidiens positifs
+
+plot(t,p,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Proportion théorique de tests quotidiens positifs&quot;,type=&quot;l&quot;,col=&quot;blue&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-14-1.png" /></p>
+<p>Nombres de tests quotidiens positifs observé et théorique :</p>
+<pre><code class="language-R">Sigma1=(pt[t]) # Nombre de tests quotidiens positifs observé
+Sigma2=(tt[t]*p) # Nombre de tests quotidiens positifs théorique
+</code></pre>
+<p>Graphiques des résultats :</p>
+<pre><code class="language-R">plot(t,Sigma1,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Nombre de tests positifs théoriques et observés&quot;,col=&quot;black&quot;)
+lines(t,Sigma2)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-16-1.png" /></p>
+<pre><code class="language-R">plot(t,pp[t],xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,ylab=&quot;Proportion de tests quotidiens positifs théoriques et observées&quot;)
+lines(t,p)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-16-2.png" /></p>
+<h3 id="estimation-de-la-reproductivite-du-virus">Estimation de la reproductivité du virus</h3>
+<p>Paramètres obtenus :</p>
+<pre><code class="language-R">R_0 = beta/(gamma)*(S0/N)
+print(R_0)
+</code></pre>
+<p><strong>On obtient une reproductivité <script type="math/tex"> \mathcal R \approx 0.78 </script> associée au deuxième confinement.</strong></p>
+<h3 id="pour-aller-plus-loin-prise-en-compte-des-deces">Pour aller plus loin : prise en compte des décès</h3>
+<p><em>Cette extension a été réalisée par Marine Dorand dans le cadre d'un stage de M1 MODE en avril-mai 2021.</em></p>
+<h4 id="traitement-des-donnees_1">Traitement des données</h4>
+<p>On importe les données de décès liés aux hospitalisations les données utilisées qui viennent de <a href="https://www.data.gouv.fr/fr/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/">data.gouv.fr</a> : donnees-hospitalieres-nouveaux-covid19-2021-05-12-19h05.csv</p>
+<pre><code class="language-R"># Lien permanent vers les données d'hospitalisations
+urlhosp = url(&quot;https://www.data.gouv.fr/fr/datasets/r/6fadff46-9efd-4c53-942a-54aca783c30c&quot;)
+
+# Tableau lié aux données d'hospitalisations
+datahosp = read.csv2(urlhosp, header=TRUE, sep=&quot;;&quot;)
+</code></pre>
+<p>Agrégation des données à l’échelle de la France (tous les départements français) par jour :</p>
+<pre><code class="language-R"># Nombre de décès par jour
+nb_deces = aggregate(incid_dc~ jour, data=datahosp, FUN = sum)
+</code></pre>
+<p>On séléctionne les données du 30 octobre au 15 décembre 2020 :</p>
+<pre><code class="language-R">nb_deces  &lt;-filter(nb_deces, jour&gt;= &quot;2020-10-30&quot;,jour&lt;= &quot;2020-12-15&quot;    )
+</code></pre>
+<p>Construction du vecteur qui contient uniquement les données de décès :</p>
+<pre><code class="language-R">dc = nb_deces[,2] # Nombre de décès
+dccum = cumsum(dc) - dc[1] # Nombre de décès cumulés depuis le 30 octobre
+LD = length(dc) 
+</code></pre>
+<p>On représente l’évolution du nombre cumulé de patients décédés dans les hôpitaux depuis le 30 octobre :</p>
+<pre><code class="language-R">plot(1:LD,dccum,xlab=&quot;Temps écoulé depuis le 30 octobre 2020 (en jours)&quot;,ylab=&quot;Nombre cumulé de décès&quot;,pch=16, col=&quot;dark green&quot;,main=&quot;Evolution du nombre de patients décédés
+au cours du deuxième confinement&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-21-1.png" /></p>
+<p>On represente l’évolution du nombre quotidien de patients décédés dans les hopitaux au cours du deuxième confinement :</p>
+<pre><code>plot(1:LD,dc,xlab="Temps écoulé depuis le 30 octobre (en jours)",ylab="Nombre cumulé de décès",pch=16, col="dark green",main="Evolution du nombre de patients décédés quotidiennement
+au cours de la deuxième flambée")
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-22-1.png" /></p>
+<h4 id="ajustement-du-modele-aux-donnees_1">Ajustement du modèle aux données</h4>
+<p>On définit les paramètres du modèle SIRD</p>
+<pre><code class="language-R">N = 67e6 # Taille de la population française
+gamma = 1/10 # Taux de guérison (inverse du temps moyen avant guérison)
+R_0 = 1 # Reproductivité du virus
+beta=gamma*R_0 # Taux de transmission du virus 
+sigma = 0.7 # Sensibilité des tests
+kappa = 5e-3 # Biais d'observation
+alpha = 0.01 # Taux de mortalité additionnel dû à l'infection
+</code></pre>
+<pre><code class="language-R">theta0 = c(beta,kappa,alpha) # Vecteur des paramètres à estimer
+</code></pre>
+<p>On définit les conditions initiales :</p>
+<pre><code class="language-R">t0 = 1 # Le 30 octobre
+t = t0:LD # vecteur temps
+
+I0 = 1e6 # On suppose qu'au 30 octobre il y a 1e6 infectieux (estimation grossière)
+R0 = 5/100*N # On suppose qu'au 30 octobre il y a 10% d'immunisés (estimation grossière)
+D0 = dccum[t0] # Nombre de décès au 30 octobre 2020
+S0 = N-I0-R0-D0 # Nombre de personnes susceptibles d'êtres infectées
+
+X0 = c(S0,I0,D0) # Vecteur d'état (conditions initiales)
+</code></pre>
+<p>La fonction du modèle SIRD :</p>
+<pre><code class="language-R">SIRD = function(t, X, P){ 
+  beta = P[1] ; alpha = P[2]
+  S = X[1] ; I = X[2] ; D = X[3]
+
+  y = beta*S*I/N # Nouvelles infections par unité de temps
+
+  dS = -y
+  dI = +y - gamma*I - alpha*I
+  dD = +alpha*I
+
+  dX = c(dS,dI,dD)
+
+  return(list(dX))
+}
+</code></pre>
+<p>La fonction qui calcule la vraisemblance des paramètres :</p>
+<pre><code class="language-R">logLike = function(theta){
+  beta = theta[1]
+  kappa = theta[2]
+  alpha = theta[3]
+
+  P = c(beta,alpha)
+
+  X = ode(X0,t,SIRD,P) 
+
+  # Proportion théorique de tests quotidiens positifs d'après le modèle 
+  p = sigma*X[,3]/(X[,3]+kappa*X[,2])
+  dcth = alpha*X[,3] # Décès théoriques 
+
+  LLT = dbinom(PT[t], TT[t], p, log=TRUE) # Proba d'observer &quot;PT&quot; test positifs au tps t
+  LLD = dpois(dc[t], dcth, log=TRUE) # Probabilité d'observer &quot;dc&quot; décès au temps t 
+  LL = sum(c(LLT,LLD))
+  return(LL)
+}
+</code></pre>
+<p>On optimise la fonction <code>LogLike</code> pour trouver les paramètres et conditions initiales qui maximisent la vraisemblance du modèle :</p>
+<pre><code class="language-R">opt = optim(theta0,logLike,control=list(fnscale=-1)) 
+</code></pre>
+<p>On rècupère les paramètres et conditions initiales optimaux :</p>
+<pre><code class="language-R">beta = opt$par[1]
+kappa = opt$par[2] 
+alpha = opt$par[3]
+P0 = c(beta,alpha) # Vecteur des paramètres mis à jour
+</code></pre>
+<p>On calcule la solution du modèle pour les paramètres et les conditions initiales estimés :</p>
+<pre><code>X = ode(X0,t,SIRD,P0)
+
+p=sigma*X[,3]/(X[,3]+kappa*X[,2])
+</code></pre>
+<p>On représente les évolutions des nombres cumulés de décès théoriques (courbe noire) et observés (courbe rouge) :</p>
+<pre><code class="language-R">plot(1:LD,dccum,col=&quot;red&quot;,xlab=&quot;Temps écoulé depuis le 30 octobre 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,pch=16,main=&quot;Evolutions du nombre de décès cumulés théoriques et observés&quot;)
+lines(t,X[,4])
+legend(&quot;topleft&quot;,legend=&quot;Nombre de décès   observés&quot;,pch=16,col=&quot;red&quot;,bty=&quot;n&quot;)
+legend(x=-2, y=14800,legend=&quot;Nombre de décès théoriques&quot;,lty=1,col=&quot;black&quot;,bty=&quot;n&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-30-1.png" /></p>
+<p>On représente l'évolution du nombre de décès quotidiens théoriques (courbe noire) et observés (courbe rouge) :</p>
+<pre><code class="language-R">plot(1:LD,dc,col=&quot;red&quot;,xlab=&quot;Temps écoulé depuis le 30 octobre 2020 (en jours)&quot;,ylab=&quot;Nombre de décès quotidiens&quot;,pch=16, main=&quot;Evolutions du nombre de décès quotidiens théoriques et observés&quot;)
+lines(t,alpha*X[,3])
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-31-1.png" /></p>
+<p>On réalise de nouveau un graphe représentant l’évolution de la proportion de tests positifs observés, <code>PP</code>, et de la proportion théorique de tests positifs calculés, <code>p</code>, après ajustement du modèle SIRD.</p>
+<pre><code class="language-R">PP=PT/TT
+plot(t,PP[t],pch=16,col=&quot;#A162A6&quot;, 
+     xlab=&quot;Temps écoule depuis le 30 octobre 2020 (en jours)&quot;,
+     ylab=&quot;Proportion de tests positifs quotidiens&quot;,
+     main = &quot;Proportions de tests positifs observés et théoriques&quot;)
+lines(t,p, lwd=2, col=&quot;#9CE06F&quot;)
+legend(&quot;topright&quot;, legend=c(&quot;Tests positifs observés&quot;, &quot;Tests positifs théoriques&quot;),col=c(&quot;#A162A6&quot;, &quot;#9CE06F&quot;), lty=1, cex = 0.8,lwd=2)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-32-1.png" /></p>
+<p>Puis, on compare <script type="math/tex"> \sigma_1 </script> (somme cumulée des tests positifs observés) avec <script type="math/tex"> \sigma_2 </script> (somme cumulée des tests positifs observés) obtenues avec le nouveau modèle SIRD. On fait ensuite un graphique des sommes cumulées des tests positifs théoriques du modèle SIRD et observés.</p>
+<pre><code class="language-R">sigma1=cumsum(PT[t])
+#nombre total de tests réalisés * proportion de tests positifs théoriques
+sigma2=cumsum(TT[t]*p) 
+plot(t,sigma1,pch=16,xlab=&quot;Temps écoule depuis le 30 octobre 2020 (en jour)&quot;,ylab=&quot;Somme cumulée des tests positifs&quot;,col=&quot;#A162A6&quot;, main = &quot;Comparaison des sommes cumulées des tests positifs&quot;)
+lines(t,sigma2,lwd=2, col = &quot;#9CE06F&quot; )
+legend(&quot;topleft&quot;, legend=c(&quot;Tests positifs observés&quot;, &quot;Tests positifs théoriques&quot;),
+       col=c(&quot;#A162A6&quot;, &quot;#9CE06F&quot;), lty=1, cex = 0.8, lwd=2)
+</code></pre>
+<p><img alt="" src="../figsTD6/tests/unnamed-chunk-33-1.png" /></p>
+<h4 id="estimation-de-la-reproductivite-du-virus_1">Estimation de la reproductivité du virus</h4>
+<p>A l’aide de nos paramètres estimés, nous sommes en mesure de calculer le nombre de reproduction effectif du virus au cours de la deuxième flambée :</p>
+<pre><code class="language-R">R_e2 = beta/(gamma+alpha)*(S0/N) # Re : nombre de reproduction effectif du virus
+
+print(paste(&quot;R_e=&quot;,R_e2))
+</code></pre>
+<p><strong>On trouve une reproductivité de <script type="math/tex"> \mathcal R \approx 0.87 </script>.</strong></p>
+<p>Nous pouvons également estimer le taux de létalité (IFR) du virus durant le deuxième confinement :</p>
+<pre><code class="language-R">IFR = alpha/(alpha+gamma) # Infection Fatality Ratio
+
+print(paste(&quot;IFR=&quot;,IFR))
+</code></pre>
+<p>Nous trouvons un IFR de 0.60%, proche de la valeur obtenue lors du premier confinement (cf. <a href="https://fmhamelin.github.io/covidagro/TD4/">TD4</a>).</p>
+<h2 id="dynamique-epidemique-sur-la-base-des-donnees-dhospitalisations">Dynamique épidémique sur la base des données d'hospitalisations</h2>
+<h3 id="modele-epidemiologique_1">Modèle épidémiologique</h3>
+<p>Nous définissons les variables </p>
+<ul>
+<li>
+<script type="math/tex"> S(t)</script> : nombre d'individus sensibles au virus (non-infectés) à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> I(t) </script> : nombre d'individus infectés et infectieux non-hospitalisés à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> H(t)​ </script> : nombre d'individus infectés hospitalisés à la date <script type="math/tex"> t​ </script>,</li>
+<li>
+<script type="math/tex"> R(t)​ </script> : nombre d'individus "retirés" de l'épidémie (guéris et immunisés ou décédés) à la date <script type="math/tex"> t </script>,</li>
+</ul>
+<p>et les paramètres</p>
+<ul>
+<li>
+<script type="math/tex"> \beta​ </script> : taux de transmission par unité de temps (fréquence des contacts ​<script type="math/tex"> \times​ </script> probabilité d'infection),</li>
+<li>
+<script type="math/tex"> \rho​ </script> : taux de "guérison" par unité de temps (inverse du temps moyen avant guérison ou décès),</li>
+<li>
+<script type="math/tex"> \alpha​ </script> : taux d'hospitalisation par unité de temps (inverse du temps moyen avant hospitalisation),</li>
+<li>
+<script type="math/tex"> \gamma​ </script> : taux de guérison ou décès à l'hôpital (inverse du temps moyen avant sortie de l'hôpital).</li>
+</ul>
+<p><img alt="" src="../figsTD6/plotSIHR.svg" /></p>
+<p>Le modèle SIHR se traduit mathématiquement par le système d'équations différentielles :
+<script type="math/tex; mode=display">
+\begin{eqnarray*}
+\frac{\mathrm{d} S}{\mathrm{d} t} &=& -\beta \frac{S}{N} I\,,\\
+\frac{\mathrm{d} I}{\mathrm{d} t} &=& +\beta \frac{S}{N} I - (\alpha+\rho) I\,,\\
+\frac{\mathrm{d} H}{\mathrm{d} t} &=& \alpha I - \gamma H\,,\\
+\frac{\mathrm{d} R}{\mathrm{d} t} &=& \rho I+ \gamma H\,.
+\end{eqnarray*}
+</script>
+</p>
+<p>La taille de la population est définie comme
+<script type="math/tex; mode=display">
+N= S+I+H+R=\mbox{constante}\,.
+</script>
+La reproductivité du pathogène est défini comme
+<script type="math/tex; mode=display">
+\mathcal R_0 = \frac{\beta}{\alpha+\rho}\frac{S(t_0)}{N}\,.
+</script>
+C'est le nombre d'infections secondaires générées par un individu infecté dans la population initiale :</p>
+<ul>
+<li>si <script type="math/tex"> \mathcal R_0>1​ </script> une vague épidémique se forme.</li>
+<li>si <script type="math/tex"> \mathcal R_0<1​</script> l'épidémie s'éteint progressivement.</li>
+</ul>
+<p>La probabilité d'être hospitalisé suite à l'infection est
+<script type="math/tex; mode=display">
+p = \frac{\alpha}{\alpha+\rho}\,.
+</script>
+Nous allons maintenant tenter d'ajuster ce modèle aux données de COVID-19 en France sous R. Ces données concernent le nombre de personnes hospitalisées à la date <script type="math/tex"> t​ </script>, <script type="math/tex"> H(t)​ </script>, ainsi que le nombre d'admissions à l'hôpital à la date <script type="math/tex"> t </script> (par unité de temps) :
+<script type="math/tex; mode=display">
+A(t)=\alpha I(t)\,.
+</script>
+</p>
+<h4 id="modele-dobservation_1">Modèle d'observation</h4>
+<p>Nous considérerons que le nombre de nouvelles hospitalisations à la date <script type="math/tex"> t </script> est une variable aléatoire discrète distribuée selon une loi de Poisson de moyenne <script type="math/tex"> A(t)​ </script>. De la même façon, nous considérerons que le nombre de personnes hospitalisées à la date <script type="math/tex"> t ​</script> est tiré dans une loi de Poisson de moyenne ​<script type="math/tex"> H(t)​ </script>.</p>
+<p>Appelons <script type="math/tex"> \theta​ </script> le vecteur des paramètres et conditions initiales à estimer : 
+<script type="math/tex; mode=display">
+\theta=\{\alpha,\beta,\gamma,S(0),I(0),H(0)\}\,.
+</script>
+Sous l'hypothèse que les observations sont indépendantes conditionnellement au modèle épidémiologique (ce qui veut dire "sachant la dynamique prédite par le modèle théorique"), la vraisemblance (<em>likelihood</em>) peut s'écrire :
+<script type="math/tex; mode=display">
+\mathcal{L}\left(\theta\right)=\prod_{t=0}^T \text{Pr}(\text{observer A admissions le jour }t| A(t))\times\text{Pr}(\text{observer H hospitalisations le jour }t|H(t))\,.
+</script>
+Comme la fonction logarithme est monotone croissante, trouver le vecteur <script type="math/tex"> \theta​ </script> qui maximise ​<script type="math/tex"> \mathcal L(\theta) </script> est équivalent à trouver le vecteur ​<script type="math/tex"> \theta​ </script> qui maximise la log-vraisemblance (<em>log-likelihood</em>) ​<script type="math/tex"> \log\mathcal{L}(\theta) </script> qui est plus communément utilisée en pratique. Nous travaillerons avec la log-vraisemblance.</p>
+<h3 id="traitement-des-donnees_2">Traitement des données</h3>
+<p>Importation du package nécessaire au programme :</p>
+<pre><code class="language-R"># Importe la fonction ode qui permet de résoudre une équation différentielle
+library(deSolve)
+</code></pre>
+<p>Mise au propre de l’espace de travail :</p>
+<pre><code class="language-R">rm(list=ls()) # Efface les variables créées lors des exécutions précédentes
+graphics.off() # Ferme les fenêtres ouvertes lors des exécutions précédentes
+</code></pre>
+<p>Importation du jeu de données sur les hospitalisations :</p>
+<pre><code class="language-R"># Lien permanent vers les données d'hospitalisations
+urlhosp = url(&quot;https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71&quot;)
+
+# Tableau lié aux données d'hospitalisation
+data = read.csv2(urlhosp, header=TRUE, sep=&quot;,&quot;)
+</code></pre>
+<p>Création d’un tableau avec seulement les données du 2ème confinement :</p>
+<pre><code class="language-R">j2confifi = which(data[]==&quot;2020-10-30&quot;) # Jour à partir duquel commence 2ème confinement
+dernierjconfifi = which(data[]==&quot;2020-12-15&quot;) # Dernier jour du 2ème confinement
+newtableau = data[j2confifi:dernierjconfifi,] # Tableau avec que données 2ème confinement
+</code></pre>
+<p>Vecteurs des données d’hospitalisations et d’admissions à l’hôpital pendant le 2ème confinement :</p>
+<pre><code class="language-R"># Personnes admises à l'hopital depuis le début du deuxième confinement
+A = c(newtableau[,10]) 
+H = c(newtableau[,8]) # Personnes hospitalisées depuis le début du deuxième confinement
+</code></pre>
+<p>Visualisation des données d’hospitalisations et d’admissions à l’hôpital pendant le 2ème confinement :</p>
+<pre><code class="language-R">nj = length(newtableau[,1])
+plot(1:nj, A,xlab=&quot;Temps écoulé depuis le 30 octobre 2020 (en jours)&quot;, ylab=&quot;Nombre d'admissions à l'hopital&quot;, col=&quot;blue&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/hosp/unnamed-chunk-6-1.png" /></p>
+<pre><code class="language-R">plot(1:nj, H,xlab=&quot;Temps écoulé depuis le 30 octobre 2020 (en jours)&quot;, ylab=&quot;Nombre de personnes hospitalisées&quot;,col=&quot;blue&quot;)
+</code></pre>
+<p><img alt="" src="../figsTD6/hosp/unnamed-chunk-6-2.png" /></p>
+<h3 id="ajustement-du-modele-aux-donnees_2">Ajustement du modèle aux données</h3>
+<p>Initialisation du modèle (le 30 octobre 2020) :</p>
+<pre><code class="language-R">N = 64e6 # Taille de la population
+rho = 1/10 # Temps moyen avant guérison ou décès : 10 jours
+gamma = 1/14 # Durée moyenne de l'hospitalisation : 14 jours
+R_0 = 1 # Nombre de reproduction de base en confinement
+beta = R_0*rho # Approximation du taux de transmission
+p = 0.1 # Probabilité d'être hospitalisé suite à l'infection
+alpha = p*rho/(1-p) # Taux d'hospitalisation
+P0 = c(beta,alpha,gamma) # Vecteur des paramètres
+
+H0 = H[1] # Le nombre de personnes hospitalisées au 30 octobre 2020
+I0 = A[1]/alpha # Les admissions correspondent à A(t) = alpha*I(t)
+R0 = (10/100)*N # Nombre de personnes immunisées au 30 octobre (estimation grossière) 
+S0 = N-I0-R0 # Nombre de personnes susceptibles d'être infectées 
+S0 = N-I0-H0-R0 # La taille de la population sensible au 30 octobre
+X0 = c(S0,I0,H0) # Vecteur d'état. Pas besoin de simuler R=N-(S+I+H).
+</code></pre>
+<p>Modèle SIHR :</p>
+<pre><code class="language-R">t=0:nj
+
+SIHR = function(t, X, P){
+  beta = P[1] # Le taux de transmission
+  alpha = P[2] # Le taux d'hospitalisation
+  gamma = P[3] # Le taux de sortie d'hôpital
+
+  S = X[1]
+  I = X[2]
+  H = X[3] # Le vecteur d'état X contient: S, I, et H
+
+  y = beta*S*I/N # Le nombre de nouvelles infections par jour
+  dS = -y # On exprime dS/dt = - beta*S*I
+  dI = y-(alpha+rho)*I # On exprime dI/dt = beta*S*I - (alpha+rho)*I
+  dH = alpha*I -gamma*H # On exprime dH/dt = alpha*I - gamma*H
+
+  dX=c(dS,dI,dH) # Renvoie dX/dt tel que demandé par la fonction ode
+  return(list(dX))
+}
+</code></pre>
+<p>Fonction de log-vraisemblance :</p>
+<pre><code class="language-R">logLike=function(theta){
+  P = theta[1:3] # Les paramètres beta, alpha, et gamma
+  X0 = theta[4:6] # Mise à jour des conditions initiales 
+
+  X = ode(X0,t,SIHR,P) # Résolution du système d'EDO (modèle SIHR)
+
+  h = X[,4] # Hospitalisation théoriques : H(t)
+  a = P[2]*X[,3] # Admissions théoriques : alpha*I(t)
+
+  LLH = dpois(H,h,log=T) # Probabilité d'observer H (loi de Poisson)
+  LLA = dpois(A,a,log=T) # Probabilité d'observer A (Poisson)
+  LL = sum(c(LLH,LLA)) # Log transforme produit des probas en somme
+  return(LL) # Renvoie la log-vraisemblance (likelihood)
+}
+</code></pre>
+<p>Arguments d'entrée de la fonction de log-vraisemblance : </p>
+<pre><code class="language-R">theta0 = c(P0,X0) # Concatène les paramètres et conditions initiales
+</code></pre>
+<p>Maximisation de la log-vraisemblance :</p>
+<pre><code class="language-R">opt = optim(theta0,logLike,control=list(fnscale=-1)) # Maximise logLike
+</code></pre>
+<p>Récupération des valeurs optimales des paramètres et conditions initiales du modèle :</p>
+<pre><code class="language-R">#Les paramètres optimaux
+beta = opt$par[1]
+alpha = opt$par[2]
+gamma = opt$par[3]
+#Les conditions initiales optimales
+S0 = opt$par[4]
+I0 = opt$par[5]
+H0 = opt$par[6]
+</code></pre>
+<p>Mise à jour des vecteurs des conditions initiales :</p>
+<pre><code class="language-R">X0 = c(S0,I0,H0) # Vecteur des conditions initiales
+P0 = c(beta,alpha,gamma) # Vecteur des paramètres mis à jour
+</code></pre>
+<p>Simulation du modèle pour les conditions initiales et paramètres estimés :</p>
+<pre><code class="language-R">T = nj ; t0 = 1 ; t = t0:T # Mise à jour du vecteur temps
+X = ode(X0,t,SIHR,P0) # Calcul de la solution optimale
+</code></pre>
+<p>Comparaison visuelle de la solution du modèle et des observations :</p>
+<pre><code class="language-R"># Affiche le nombre d’individus hospitalisés (données et modèle)
+plot(1:nj,H,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,
+     ylab=&quot;Nombre de personnes hospitalisées&quot;,col=&quot;blue&quot;)     
+lines(X[,1],X[,4])
+</code></pre>
+<p><img alt="" src="../figsTD6/hosp/unnamed-chunk-16-1.png" /></p>
+<pre><code class="language-R">plot(1:nj,A,xlab=&quot;Temps écoulé depuis le 30 octobre (en jours)&quot;,
+     ylab=&quot;Nombre de nouvelles hospitalisations (par jour)&quot;,col=&quot;red&quot;);
+lines(X[,1],alpha*X[,3])
+</code></pre>
+<p><img alt="" src="../figsTD6/hosp/unnamed-chunk-16-2.png" /></p>
+<h3 id="estimation-de-la-reproductivite-du-virus_2">Estimation de la reproductivité du virus</h3>
+<p>Affichage des valeurs estimées des paramètres :</p>
+<pre><code class="language-R">R_0=beta/(alpha+rho)*S0/N # Nombre de reproduction de base estimé
+print(R_0)
+
+p=alpha/(alpha+rho) # Probabilité d'être hospitalisé
+print(p)                        
+
+print(1/gamma) # Temps moyen d'hospitalisation
+</code></pre>
+<p><strong>Nous obtenons les estimations suivantes pour le deuxième confinement :</strong></p>
+<ul>
+<li><strong>Reproductivité du virus : <script type="math/tex"> \mathcal R \approx 0.81 </script>,</strong> </li>
+<li><strong>Probabilité d'être hospitalisé : <script type="math/tex"> p \approx 0.10 </script>,</strong> </li>
+<li><strong>Temps moyen d'hospitalisation : <script type="math/tex"> 15 </script> jours.</strong></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
