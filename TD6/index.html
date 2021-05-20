@@ -368,7 +368,7 @@ alpha = 0.01 # Taux de mortalité additionnel dû à l'infection
 t = t0:LD # vecteur temps
 
 I0 = 1e6 # On suppose qu'au 30 octobre il y a 1e6 infectieux (estimation grossière)
-R0 = 5/100*N # On suppose qu'au 30 octobre il y a 10% d'immunisés (estimation grossière)
+R0 = 10/100*N # On suppose qu'au 30 octobre il y a 10% d'immunisés (estimation grossière)
 D0 = dccum[t0] # Nombre de décès au 30 octobre 2020
 S0 = N-I0-R0-D0 # Nombre de personnes susceptibles d'êtres infectées
 
