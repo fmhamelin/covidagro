@@ -152,7 +152,7 @@
 \frac{\mathrm{d}D}{\mathrm{d}t}&=&\alpha I\,.
 \end{eqnarray}
 </script>
-Comme nous nous intéressons à la phase initiale de l'épidémie, nous faisons l'hypothèse que pour tout <script type="math/tex">t</script> dans cette phase initiale, <script type="math/tex">I,R,D \ll S</script>, de sorte que <script type="math/tex">S\approx N</script>(la taille de la population est approximativement constante durant cette période). Le modèle simplifié s'écrit :
+Comme nous nous intéressons à la phase initiale de l'épidémie, nous faisons l'hypothèse que pour tout <script type="math/tex">t</script> dans cette phase initiale, <script type="math/tex">I,R,D \ll S</script>, de sorte que <script type="math/tex">S\approx N</script> (la taille de la population est approximativement constante durant cette période). Le modèle simplifié s'écrit :
 <script type="math/tex; mode=display">
 \begin{eqnarray}
 \frac{\mathrm{d}I}{\mathrm{d}t}&=&(\beta  - \alpha-\gamma)I\,,\\
@@ -212,6 +212,8 @@ Tobs=Tobs[w]  # Troncation des données
 Dobs=Dobs[w]
 </code></pre>
 <p>Affichons les décès cumulés sur cette période :</p>
+<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de personnes décédées&quot;,col=&quot;blue&quot;)
+</code></pre>
 <p><img alt="plot2" src="../figsTD1/plot2.svg" /></p>
 <p>La croissance est-elle exponentielle ? Si oui, le logarithme du nombre de décès devrait croître de façon linéaire en fonction du temps :</p>
 <pre><code class="language-R">plot(Tobs,log(Dobs),xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Log(Nombre de décès cumulés)&quot;,col=&quot;blue&quot;)
@@ -234,7 +236,7 @@ Cela donne
 <script type="math/tex; mode=display">
 \log(D(t))\approx\log\left(\frac{q}{r}\right)+rt\,,
 </script>
-ce qui permet d'obtenir des estimations initiales des valeurs des paramètres <script type="math/tex">r</script>et <script type="math/tex">q</script>d'après la régression linéaire réalisée précédemment :</p>
+ce qui permet d'obtenir des estimations initiales des valeurs des paramètres <script type="math/tex">r</script> et <script type="math/tex">q</script> d'après la régression linéaire réalisée précédemment :</p>
 <pre><code class="language-R">#estimations grossières initiales
 r=slope             # r = beta - alpha - gamma
 q=r*exp(intercept)  # q = alpha*I_0
@@ -252,7 +254,7 @@ lines(Tmodel,Dmodel,col=&quot;red&quot;)
 <pre><code class="language-R">theta=c(r,q) # Vecteur des paramètres à optimiser
 </code></pre>
 <h3 id="methode-des-moindres-carres">Méthode des moindres carrés</h3>
-<p>Recherchons les valeurs des paramètres <script type="math/tex">r</script>et <script type="math/tex">q</script>qui minimisent la somme des carrés des écarts entre modèle et données (SCE) :
+<p>Recherchons les valeurs des paramètres <script type="math/tex">r</script> et <script type="math/tex">q</script> qui minimisent la somme des carrés des écarts entre modèle et données (SCE) :
 <script type="math/tex; mode=display">
 \mbox{SCE} = \sum_{t=0}^T \left(D_{\small\mbox{model}}(t)-D_{\small\mbox{data}}(t)\right)^2\,.
 </script>
@@ -275,7 +277,8 @@ r=opt$par[1]
 q=opt$par[2]
 </code></pre>
 <p>Affichons la solution optimale au sens des moindres carrés :</p>
-<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
+<pre><code class="language-R">Dmodel = D0 + (q/r)*(exp(r*Tmodel)-1) 
+plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
 lines(Tmodel,Dmodel,col=&quot;red&quot;)
 </code></pre>
 <p><img alt="plot5" src="../figsTD1/plot5.svg" /></p>
@@ -318,12 +321,13 @@ r=opt$par[1]
 q=opt$par[2]
 </code></pre>
 <p>Affichons la solution optimale au sens du maximum de vraisemblance :</p>
-<pre><code class="language-R">plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
+<pre><code class="language-R">Dmodel = D0 + (q/r)*(exp(r*Tmodel)-1) 
+plot(Tobs,Dobs,xlab=&quot;Temps écoulé depuis le 2 mars 2020 (en jours)&quot;,ylab=&quot;Nombre de décès cumulés&quot;,col=&quot;blue&quot;)
 lines(Tmodel,Dmodel,col=&quot;red&quot;)
 </code></pre>
 <p><img alt="plot6" src="../figsTD1/plot6.svg" /></p>
 <p>L'ajustement est comparable à celui obtenu via les moindres carrés. Affichons les valeurs des paramètres obtenues :</p>
-<pre><code>print(r)
+<pre><code class="language-R">print(r)
 print(q)
 </code></pre>
 <p>On trouve <script type="math/tex">r \approx 0.19</script> et <script type="math/tex">q \approx 2.47</script>, ce qui diffère un peu des valeurs obtenues via les moindres carrés.</p>
