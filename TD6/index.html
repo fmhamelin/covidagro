@@ -404,7 +404,7 @@ X0 = c(S0,I0,D0) # Vecteur d'état (conditions initiales)
   p = sigma*X[,3]/(X[,3]+kappa*X[,2])
   dcth = alpha*X[,3] # Décès théoriques 
 
-  LLT = dbinom(PT[t], TT[t], p, log=TRUE) # Proba d'observer &quot;PT&quot; test positifs au tps t
+  LLT = dbinom(pt[t], tt[t], p, log=TRUE) # Proba d'observer &quot;pt&quot; test positifs au tps t
   LLD = dpois(dc[t], dcth, log=TRUE) # Probabilité d'observer &quot;dc&quot; décès au temps t 
   LL = sum(c(LLT,LLD))
   return(LL)
@@ -437,8 +437,8 @@ lines(t,alpha*X[,3])
 </code></pre>
 <p><img alt="" src="../figsTD6/tests/unnamed-chunk-31-1.png" /></p>
 <p>On réalise de nouveau un graphe représentant l’évolution de la proportion de tests positifs observés, <code>PP</code>, et de la proportion théorique de tests positifs calculés, <code>p</code>, après ajustement du modèle SIRD.</p>
-<pre><code class="language-R">PP=PT/TT
-plot(t,PP[t],pch=16,col=&quot;#A162A6&quot;, 
+<pre><code class="language-R">pp=pt/tt
+plot(t,pp[t],pch=16,col=&quot;#A162A6&quot;, 
      xlab=&quot;Temps écoule depuis le 30 octobre 2020 (en jours)&quot;,
      ylab=&quot;Proportion de tests positifs quotidiens&quot;,
      main = &quot;Proportions de tests positifs observés et théoriques&quot;)
@@ -447,9 +447,9 @@ legend(&quot;topright&quot;, legend=c(&quot;Tests positifs observés&quot;, &quo
 </code></pre>
 <p><img alt="" src="../figsTD6/tests/unnamed-chunk-32-1.png" /></p>
 <p>Puis, on compare <script type="math/tex"> \sigma_1 </script> (somme cumulée des tests positifs observés) avec <script type="math/tex"> \sigma_2 </script> (somme cumulée des tests positifs observés) obtenues avec le nouveau modèle SIRD. On fait ensuite un graphique des sommes cumulées des tests positifs théoriques du modèle SIRD et observés.</p>
-<pre><code class="language-R">sigma1=cumsum(PT[t])
+<pre><code class="language-R">sigma1=cumsum(pt[t])
 #nombre total de tests réalisés * proportion de tests positifs théoriques
-sigma2=cumsum(TT[t]*p) 
+sigma2=cumsum(tt[t]*p) 
 plot(t,sigma1,pch=16,xlab=&quot;Temps écoule depuis le 30 octobre 2020 (en jour)&quot;,ylab=&quot;Somme cumulée des tests positifs&quot;,col=&quot;#A162A6&quot;, main = &quot;Comparaison des sommes cumulées des tests positifs&quot;)
 lines(t,sigma2,lwd=2, col = &quot;#9CE06F&quot; )
 legend(&quot;topleft&quot;, legend=c(&quot;Tests positifs observés&quot;, &quot;Tests positifs théoriques&quot;),
@@ -462,13 +462,13 @@ legend(&quot;topleft&quot;, legend=c(&quot;Tests positifs observés&quot;, &quot
 
 print(paste(&quot;R_e=&quot;,R_e2))
 </code></pre>
-<p><strong>On trouve une reproductivité de <script type="math/tex"> \mathcal R \approx 0.88 </script>.</strong></p>
+<p><strong>On trouve une reproductivité de <script type="math/tex"> \mathcal R \approx 0.71 </script>.</strong></p>
 <p>Nous pouvons également estimer le taux de létalité (IFR) du virus durant le deuxième confinement :</p>
 <pre><code class="language-R">IFR = alpha/(alpha+gamma) # Infection Fatality Ratio
 
 print(paste(&quot;IFR=&quot;,IFR))
 </code></pre>
-<p>Nous trouvons un IFR de 0.45%, comme pour la deuxième flambée (cf. <a href="https://fmhamelin.github.io/covidagro/TD5/">TD5</a>).</p>
+<p>Nous trouvons un IFR de 0.8%.</p>
 <h2 id="dynamique-epidemique-sur-la-base-des-donnees-dhospitalisations">Dynamique épidémique sur la base des données d'hospitalisations</h2>
 <h3 id="modele-epidemiologique_1">Modèle épidémiologique</h3>
 <p>Nous définissons les variables </p>
